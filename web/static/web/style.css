@@ -47,7 +47,9 @@ button {
 button:hover:not(:disabled) { border-color: var(--accent); }
 button:disabled { opacity: .5; cursor: not-allowed; }
 /* 操作进行中（请求还没有返回）：按钮暂时不可点击 */
-body.busy button, body.busy select { pointer-events: none; opacity: .6; }
+body.busy button, body.busy select { pointer-events: none; }
+/* 座位和座位表格子不变淡，否则对调动画期间整个座位图会闪一下 */
+body.busy button:not(.seat):not(.cell), body.busy select { opacity: .6; }
 button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 button.danger { color: var(--danger); }
 button.danger:hover:not(:disabled) { border-color: var(--danger); }
@@ -107,6 +109,38 @@ button.seat { cursor: pointer; }
 .legend .ramp { width: 120px; height: 10px; border-radius: 5px; border: 1px solid var(--line);
   background: linear-gradient(to right, hsl(213 70% 97%), hsl(213 70% 78%)); }
 
+/* ---------- 排座页：可缩放、可拖动的座位图 ---------- */
+/* 显示区域：高度随窗口变化；座位图超出的部分被裁掉，靠缩放和拖动查看 */
+.viewport {
+  position: relative; overflow: hidden; height: clamp(320px, calc(100vh - 330px), 1400px);
+  border: 1px solid #e2e8f0; border-radius: 8px; background: #f8fafc;
+  cursor: grab; touch-action: none; user-select: none;
+}
+.viewport.dragging { cursor: grabbing; }
+/* 座位图本身：位置和大小由app.js中的applyView通过transform设置 */
+.stage { position: absolute; left: 0; top: 0; width: max-content; transform-origin: 0 0; }
+.view-controls { margin-bottom: 10px; }
+.view-controls .spacer { flex: 1; }
+.zoom-label { min-width: 44px; text-align: center; font-variant-numeric: tabular-nums; color: var(--muted); }
+label.check { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+
+/* 不显示座位负担时：座位用统一的底色 */
+.seat.plain { background: #e8f0fb; }
+.seat.plain.vacant { background: #ffffff; }
+
+/* 对调动画中移动的名字牌 */
+.ghost {
+  position: absolute; z-index: 5; pointer-events: none;
+  display: flex; align-items: center; justify-content: center; padding: 4px;
+  font-weight: bold; text-align: center; overflow: hidden; white-space: nowrap;
+  background: #ffffff; border: 2px solid var(--accent); border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, .25);
+  transition: transform 450ms cubic-bezier(.4, 0, .2, 1);
+}
+
+/* 历史负担表格：人数多时在卡片内滚动，不把页面撑得很长 */
+.table-scroll { max-height: clamp(280px, calc(100vh - 360px), 1400px); overflow-y: auto; }
+
 /* 座位表编辑器：格子小一些 */
 .editor { --cell: 38px; }
 .editor .cell {
@@ -128,3 +162,39 @@ dialog { border: 1px solid var(--line); border-radius: 10px; padding: 20px; min-
 dialog::backdrop { background: rgba(15, 23, 42, .35); }
 dialog h2 { font-size: 16px; margin: 0 0 12px; }
 dialog .toolbar { margin: 14px 0 0; justify-content: flex-end; }
+
+/* ---------- 询问框 ---------- */
+#ask { max-width: 460px; }
+.ask-message { margin: 0 0 12px; white-space: pre-line; font-size: 15px; }
+#ask input[type=text] { width: 100%; font-size: 15px; padding: 8px 10px; }
+button.primary.danger-fill { background: var(--danger); border-color: var(--danger); color: #fff; }
+
+/* ---------- 欢迎页、新手引导条、帮助页 ---------- */
+footer { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+[hidden] { display: none !important; }
+button.big { padding: 10px 22px; font-size: 16px; }
+
+.welcome { max-width: 760px; margin: 24px auto; padding: 28px 32px; }
+.welcome h2 { font-size: 22px; margin-bottom: 6px; }
+.welcome .empty-note { color: var(--muted); margin: 0 0 8px; }
+.steps { list-style: none; padding: 0; margin: 16px 0 22px; display: grid; gap: 14px; }
+.steps li { display: flex; gap: 14px; align-items: flex-start; }
+.steps strong { font-size: 16px; }
+.step-number {
+  flex: none; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff;
+  display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px;
+}
+
+.guide {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px;
+  background: #eff6ff; border: 1px solid #93c5fd; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px;
+}
+.guide-step { color: var(--muted); }
+.guide-step.done { color: #15803d; }
+.guide-step.current { color: var(--ink); font-weight: bold; }
+.guide-step .hint { font-weight: normal; }
+
+.help { max-width: 860px; margin: 0 auto; padding: 24px 32px; font-size: 15px; line-height: 1.8; }
+.help h2 { font-size: 20px; }
+.help h3 { font-size: 16px; margin: 22px 0 6px; padding-left: 10px; border-left: 4px solid var(--accent); }
+.help p { margin: 6px 0; }

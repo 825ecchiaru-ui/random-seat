@@ -6,6 +6,9 @@
 #  allocator.py  SeatAllocator
 #  history.py    HistoryManager、SeatAssignment（历史记录，SQLite）
 #  loader.py     load_class（按数据库搭建班级并恢复状态）
+#程序的版本号。发布新版本时修改这里，界面、安装包和使用说明都从这里读取
+__version__ = "1.0.0"
+
 from . import config
 from .models import Student, Seat, Classroom
 from .burden import BurdenCalculator

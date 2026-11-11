@@ -5,6 +5,7 @@
 #这样服务重启、同时打开多个页面都不会出现内存与数据库不一致
 import json
 import logging
+import os
 import sqlite3
 from functools import wraps
 
@@ -15,6 +16,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_http_methods
 
+import seat_random
 from seat_random import HistoryManager, SeatAssignment, load_class
 
 logger = logging.getLogger("web")
@@ -161,7 +163,8 @@ def describe_plan(assignment, plan_score, base):
 
 @ensure_csrf_cookie
 def index(request):#网页本身。同时把防伪令牌放进浏览器，之后修改数据的请求要带上它
-    return render(request, "index.html")
+    #脚本和样式的网址后面带上版本号：程序升级后浏览器会重新读取它们，而不是继续用以前存下的旧文件
+    return render(request, "index.html", {"version": seat_random.__version__})
 
 
 @require_http_methods(["GET", "POST"])
@@ -309,3 +312,26 @@ def latest_assignment(request, history, data, class_name):
 def integrity(request, history, data):
     #检查数据完整性，返回发现的问题列表
     return {"problems": history.check_integrity()}
+
+
+@require_http_methods(["GET"])
+@api
+def app_info(request, history, data):
+    #程序信息：版本号、是否为桌面版、数据文件夹的位置。界面据此决定是否显示桌面版专用的按钮
+    return {"version": seat_random.__version__, "desktop": settings.DESKTOP_MODE,
+            "data_dir": str(settings.DATA_DIR) if settings.DESKTOP_MODE else ""}
+
+
+@require_http_methods(["POST"])
+@api
+def app_open(request, history, data):
+    #桌面版专用：用Windows打开数据文件夹或使用说明文件，内容为{"what": "data"或"help"}
+    #只能打开这两个固定的位置，不接受浏览器传来的路径
+    if not settings.DESKTOP_MODE:
+        raise ValueError("Only available in the desktop app")
+    targets = {"data": str(settings.DATA_DIR), "help": settings.HELP_FILE}
+    target = targets.get(data.get("what"))
+    if not target or not os.path.exists(target):
+        raise ValueError(f"Cannot open: {data.get('what')}")
+    os.startfile(target)
+    return {"opened": data["what"]}

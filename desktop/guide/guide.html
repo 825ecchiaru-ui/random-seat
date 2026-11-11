@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="google" content="notranslate">
+<title>座位随机重排 使用说明</title>
+<!-- 这是使用说明的原稿。打包时（desktop/build.py）会把{{VERSION}}换成版本号，把图片直接嵌进文件里，
+     得到可以单独发给别人的"使用说明.html"，并另存一份PDF -->
+<style>
+  :root { --ink: #1e293b; --muted: #64748b; --line: #cbd5e1; --accent: #2563eb; --soft: #eff6ff; --warn: #fef3c7; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #f1f5f9; color: var(--ink);
+         font: 16px/1.85 "Microsoft YaHei", "PingFang SC", system-ui, sans-serif; }
+  main { max-width: 900px; margin: 0 auto; padding: 32px 44px 60px; background: #fff; }
+  h1 { font-size: 30px; margin: 8px 0 4px; }
+  h2 { font-size: 22px; margin: 44px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--accent); }
+  h3 { font-size: 18px; margin: 28px 0 8px; }
+  p { margin: 8px 0; }
+  ul, ol { padding-left: 26px; margin: 8px 0; }
+  li { margin: 4px 0; }
+  a { color: var(--accent); }
+  .cover { display: flex; align-items: center; gap: 20px; }
+  .cover img { width: 84px; height: 84px; }
+  .sub { color: var(--muted); }
+  .toc { background: var(--soft); border-radius: 10px; padding: 14px 22px; margin: 22px 0; columns: 2; }
+  .toc a { display: block; text-decoration: none; padding: 2px 0; }
+  figure { margin: 16px 0 22px; break-inside: avoid; }
+  figure img { display: block; width: 100%; border: 1px solid var(--line); border-radius: 8px; }
+  figcaption { color: var(--muted); font-size: 14px; text-align: center; margin-top: 6px; }
+  .tip, .warn { border-radius: 8px; padding: 10px 16px; margin: 14px 0; break-inside: avoid; }
+  .tip { background: var(--soft); border-left: 4px solid var(--accent); }
+  .warn { background: var(--warn); border-left: 4px solid #f59e0b; }
+  .step { display: flex; gap: 14px; align-items: flex-start; margin: 22px 0 6px; }
+  .step .n { flex: none; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #fff;
+             display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; }
+  .step h3 { margin: 2px 0 0; }
+  kbd { background: #f1f5f9; border: 1px solid var(--line); border-radius: 5px; padding: 1px 7px; font: inherit; white-space: nowrap; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; break-inside: avoid; }
+  th, td { border: 1px solid var(--line); padding: 7px 12px; text-align: left; vertical-align: top; }
+  th { background: #f8fafc; }
+  dt { font-weight: bold; margin-top: 14px; }
+  dd { margin: 2px 0 0; }
+  footer { color: var(--muted); font-size: 14px; margin-top: 48px; border-top: 1px solid var(--line); padding-top: 12px; }
+  @media print {
+    body { background: #fff; font-size: 12pt; }
+    main { padding: 0; max-width: none; }
+    h2 { break-after: avoid; }
+    h3, .step { break-after: avoid; }
+    a { color: inherit; text-decoration: none; }
+  }
+  @page { margin: 16mm 15mm; }
+</style>
+</head>
+<body>
+<main>
+
+<div class="cover">
+  <img src="../assets/app.png" alt="">
+  <div>
+    <h1>座位随机重排 使用说明</h1>
+    <div class="sub">版本 {{VERSION}} · 适用于 Windows 10 和 Windows 11</div>
+  </div>
+</div>
+
+<p>这是一个帮老师给全班重新排座位的小工具。它不是简单地把学生打乱，而是会记住每个人坐过哪里，
+让坐过边角位置的学生之后更容易换到好位置，长期下来对每个人都公平。</p>
+<p>它完全在您自己的电脑上运行，<strong>不需要联网，也不会把学生名单上传到任何地方</strong>。</p>
+
+<div class="toc">
+  <a href="#open">一、打开程序</a>
+  <a href="#first">二、第一次使用：四步排出座位表</a>
+  <a href="#again">三、以后每次换座位</a>
+  <a href="#arrange">四、排座页的更多操作</a>
+  <a href="#roster">五、管理名单</a>
+  <a href="#history">六、查看以前的座位</a>
+  <a href="#classes">七、管理多个班级</a>
+  <a href="#data">八、数据、备份和换电脑</a>
+  <a href="#faq">九、常见问题</a>
+  <a href="#algorithm">十、它是怎么排的（算法说明）</a>
+</div>
+
+<h2 id="open">一、打开程序</h2>
+
+<p>程序有两种形式，功能完全一样，选一种即可。</p>
+
+<h3>便携版（不用安装）</h3>
+<ol>
+  <li>在压缩包上点鼠标右键，选“全部解压缩”，解压到任意位置（例如桌面，或者 U 盘）。</li>
+  <li>打开解压出来的文件夹，双击里面的 <kbd>座位随机重排.exe</kbd>。</li>
+</ol>
+<div class="warn">请先解压再运行，不要直接在压缩包里双击。文件夹里的 <kbd>_internal</kbd> 文件夹和
+<kbd>portable.txt</kbd> 是程序需要的，请不要删除或移走。</div>
+
+<h3>安装版</h3>
+<ol>
+  <li>双击安装包，按提示点“下一步”直到完成。不需要管理员权限。</li>
+  <li>安装好后，双击桌面上的“座位随机重排”图标，或者在开始菜单里找到它。</li>
+</ol>
+
+<h3>第一次打开时可能出现的提示</h3>
+<p>Windows 有时会弹出蓝色的“Windows 已保护你的电脑”。这是因为本程序是个人制作的，没有购买商业签名，
+并不表示它有问题。请点提示里的<strong>“更多信息”</strong>，再点<strong>“仍要运行”</strong>。之后不会再提示。</p>
+
+<p>打开后会出现程序自己的窗口，直接用鼠标操作即可，不需要输入任何网址。<strong>关闭窗口就是退出程序</strong>，
+数据都是自动保存的。</p>
+
+<figure><img src="shots/01_welcome.png" alt="欢迎页"><figcaption>第一次打开时的欢迎页</figcaption></figure>
+
+<div class="tip">想先看看效果？点“先用示例班级试一试”，程序会建好一个有 36 个座位和 32 名“同学”的班级，
+可以随便操作。试完后点右上方的“删除班级”把它删掉即可。</div>
+
+<h2 id="first">二、第一次使用：四步排出座位表</h2>
+
+<p>页面上方有一条蓝色的“新手引导”，会告诉您现在该做哪一步，点它右边的按钮可以直接跳过去。</p>
+
+<div class="step"><div class="n">1</div><h3>新建班级</h3></div>
+<p>点“新建班级”，输入班级名称（例如“高一3班”），点“确定”。</p>
+<figure><img src="shots/02_new_class.png" alt="新建班级"><figcaption>输入班级名称</figcaption></figure>
+
+<div class="step"><div class="n">2</div><h3>画座位表</h3></div>
+<p>点上方的“座位表”。页面上是一片格子，最上面是黑板。<strong>教室里哪儿有座位，就点哪个格子</strong>，
+点中的格子会变蓝；点错了再点一次就取消。过道的位置空着不点。</p>
+<ul>
+  <li>格子不够用时，点“加一排”或“加一列”。</li>
+  <li>画好后一定要点左上角的<strong>“保存座位表”</strong>。</li>
+</ul>
+<figure><img src="shots/03_layout.png" alt="座位表"><figcaption>6 排、每排 3 组双人座的教室。中间空着的两列是过道</figcaption></figure>
+
+<div class="step"><div class="n">3</div><h3>添加名单</h3></div>
+<p>点上方的“名单”。在左边的框里输入学生姓名，<strong>一行一个</strong>，然后点“添加”。</p>
+<ul>
+  <li>可以从 Excel 或 Word 里选中一列姓名，复制后粘贴到框里。</li>
+  <li>也可以点“从文本文件读取”，选择一个每行一个姓名的文本文件（.txt）。</li>
+  <li>有重名的学生时，请自己加以区分，例如“张伟（大）”“张伟（小）”，或者加上学号。</li>
+</ul>
+<figure><img src="shots/04_roster_input.png" alt="输入名单"><figcaption>在左边的框里输入或粘贴姓名</figcaption></figure>
+<figure><img src="shots/05_roster.png" alt="名单"><figcaption>添加之后，右边列出全班的名单</figcaption></figure>
+
+<div class="step"><div class="n">4</div><h3>排座</h3></div>
+<p>点上方的“排座”，再点蓝色的<strong>“生成新方案”</strong>。程序会排出一张座位表给您预览。</p>
+<ul>
+  <li>这时<strong>还没有保存</strong>。不满意可以点“重新生成”，想几次就几次。</li>
+  <li>想单独调整某两个人：先点其中一个座位，再点另一个座位，两人就会互换。</li>
+  <li>满意后点<strong>“确认并保存”</strong>。保存之后，这张座位表才算数。</li>
+</ul>
+<figure><img src="shots/06_preview.png" alt="预览"><figcaption>预览中。橙色边框表示这个座位换了人；蓝色边框是刚点选、准备对调的座位</figcaption></figure>
+<figure><img src="shots/07_saved.png" alt="保存后"><figcaption>保存之后的座位表。可以直接投到大屏幕上给学生看</figcaption></figure>
+
+<h2 id="again">三、以后每次换座位</h2>
+<p>打开程序，点“生成新方案”，看一看，点“确认并保存”。就这三下。</p>
+<p>程序记得每个人以前坐过哪里，所以每次排出来的结果都会照顾到之前坐得不好的学生。</p>
+
+<h2 id="arrange">四、排座页的更多操作</h2>
+<dl>
+  <dt>对调两名学生</dt>
+  <dd>预览时，先点一个座位，再点另一个座位。名字会滑动到对方的位置。</dd>
+  <dt>把学生挪到空座位</dt>
+  <dd>预览时，先点这名学生的座位，再点空座位。</dd>
+  <dt>放大、缩小、移动座位图</dt>
+  <dd>滚动鼠标滚轮可以放大缩小；按住鼠标左键拖动可以移动；点“适应窗口”恢复成刚好完整显示。</dd>
+  <dt>排错了，想反悔</dt>
+  <dd>点“撤销上一次排座”，座位回到上一次保存的样子。可以连续撤销多次。</dd>
+  <dt>“公平性分数”是什么</dt>
+  <dd>表示排完之后全班的“历史负担”有多接近，<strong>越接近 0 越公平</strong>。手动对调学生后它会重新计算，
+  可以用来比较哪种调法更公平。平时不用管它。</dd>
+  <dt>“显示座位负担”和“展开历史负担表”</dt>
+  <dd>默认是关着的，这样投屏时学生看不到这些数字。勾选或点击后可以看到每个座位的好坏程度，以及每个学生累计的情况。</dd>
+</dl>
+<figure><img src="shots/08_burden.png" alt="显示负担"><figcaption>打开“显示座位负担”和历史负担表之后。座位颜色越深、数字越大，表示位置越偏</figcaption></figure>
+
+<h2 id="roster">五、管理名单</h2>
+<table>
+  <tr><th style="width: 30%">情况</th><th>怎么做</th></tr>
+  <tr><td>来了新同学</td><td>在“名单”页的框里输入姓名，点“添加”。</td></tr>
+  <tr><td>有同学转走或长期请假</td><td>点他那一行的“标记离开”。他不再参与排座，以前的记录都保留。</td></tr>
+  <tr><td>请假的同学回来了</td><td>点他那一行的“标记回来”。</td></tr>
+  <tr><td>名字写错了</td><td>点“改名”，输入正确的名字。</td></tr>
+  <tr><td>不小心多加了一个人</td><td>点“删除”。只有从来没有排过座的人才能删除；已经排过座的请用“标记离开”。</td></tr>
+  <tr><td>想看某个同学都坐过哪里</td><td>点他那一行的“历史”。</td></tr>
+</table>
+<div class="tip">新来的同学和请假回来的同学，程序会把他的起点设为全班当时的平均水平，
+不会因为“以前没坐过差座位”而让他连续坐很多次差座位。</div>
+<figure><img src="shots/10_student_history.png" alt="学生历史"><figcaption>某位同学历次的座位</figcaption></figure>
+
+<h2 id="history">六、查看以前的座位</h2>
+<p>点上方的“历史”。左边是每一次排座的记录，点其中一行，右边就显示那一次的座位表。</p>
+<figure><img src="shots/09_history.png" alt="历史"><figcaption>历史页</figcaption></figure>
+
+<h2 id="classes">七、管理多个班级</h2>
+<ul>
+  <li><strong>新建</strong>：点“新建班级”。每个班级有各自的座位表、名单和记录，互不影响。</li>
+  <li><strong>切换</strong>：点左上方“班级”旁边的下拉框，选择要操作的班级。</li>
+  <li><strong>改名</strong>：点“改名”。</li>
+  <li><strong>删除</strong>：点“删除班级”，按提示输入班级名称确认。删除前程序会自动备份一次数据。</li>
+  <li><strong>换了教室</strong>：在“座位表”页重新点选座位并保存即可，以前的记录不受影响。</li>
+</ul>
+
+<h2 id="data">八、数据、备份和换电脑</h2>
+<p>所有内容都自动保存在一个“数据文件夹”里，不需要手动保存。</p>
+<table>
+  <tr><th style="width: 22%"></th><th>数据文件夹在哪里</th></tr>
+  <tr><td>便携版</td><td>程序所在文件夹里的 <kbd>data</kbd> 文件夹。把整个程序文件夹复制到 U 盘或另一台电脑，数据就跟着走了。</td></tr>
+  <tr><td>安装版</td><td>点程序里的“帮助”→“打开数据文件夹”就能看到。卸载或重新安装程序都不会删除它。</td></tr>
+</table>
+<dl>
+  <dt>怎么备份</dt>
+  <dd>关闭程序，把数据文件夹整个复制到别处（例如 U 盘）就是一份备份。另外，程序在删除班级之前会自动备份，
+  放在数据文件夹里的 <kbd>backups</kbd> 文件夹中，保留最近 10 份。</dd>
+  <dt>怎么换电脑（安装版）</dt>
+  <dd>在旧电脑上点“帮助”→“打开数据文件夹”，把里面的 <kbd>seat_history.db</kbd> 文件复制出来；
+  在新电脑上装好程序并打开一次，再关闭，同样打开数据文件夹，把这个文件放进去（替换原有的）。</dd>
+  <dt>怎么从备份恢复</dt>
+  <dd>关闭程序，把备份文件改名为 <kbd>seat_history.db</kbd>，放进数据文件夹替换原有的文件，再打开程序。</dd>
+  <dt>怎么卸载</dt>
+  <dd>便携版：直接删除整个文件夹。安装版：在 Windows 的“设置”→“应用”里找到“座位随机重排”，点“卸载”。
+  卸载不会删除数据文件夹，需要的话可以手动删除。</dd>
+</dl>
+
+<h2 id="faq">九、常见问题</h2>
+<dl>
+  <dt>双击后没有反应，或者提示启动失败</dt>
+  <dd>便携版请确认已经解压，并且没有移走 <kbd>_internal</kbd> 文件夹。如果仍然不行，
+  请把数据文件夹里 <kbd>logs</kbd> 文件夹中的 <kbd>app.log</kbd> 文件发给程序的提供者。</dd>
+  <dt>打开的不是程序窗口，而是浏览器</dt>
+  <dd>个别较旧的 Windows 10 电脑缺少显示窗口所需的系统组件（WebView2），这时程序会改用浏览器显示，
+  同时出现一个提示框；功能完全一样。使用期间不要关闭提示框，用完后点提示框的“确定”即可退出。</dd>
+  <dt>杀毒软件提示有风险，或者程序文件不见了</dt>
+  <dd>本程序没有购买商业签名，个别杀毒软件可能误判并把 <kbd>座位随机重排.exe</kbd> 隔离。
+  可以在杀毒软件的“隔离区”或“保护历史记录”里选择“还原”或“允许”，也可以联系程序的提供者。</dd>
+  <dt>点“生成新方案”时提示座位数少于学生数</dt>
+  <dd>到“座位表”页多点几个座位并保存，或者到“名单”页把已经不在班的学生“标记离开”。</dd>
+  <dt>提示“数据已被其他操作修改”</dt>
+  <dd>说明这个班级刚才在别处被改动过（比如连点了两次按钮）。程序已经自动刷新，重新操作一次即可。</dd>
+  <dt>有的座位总是空着</dt>
+  <dd>学生比座位少时，程序会优先让大家坐较好的座位，把最偏的座位空出来。如果空着的反而是好座位，
+  可以在预览时手动把学生挪过去再保存。</dd>
+  <dt>可以指定某个学生必须坐在某个位置吗</dt>
+  <dd>目前不能自动指定。可以在预览时把他手动对调到那个位置，再保存。</dd>
+  <dt>程序需要联网吗？名单安全吗</dt>
+  <dd>不需要联网。所有数据只保存在这台电脑的数据文件夹里。</dd>
+</dl>
+
+<h2 id="algorithm">十、它是怎么排的（算法说明）</h2>
+
+<h3>用大白话说</h3>
+<ol>
+  <li><strong>给每个座位打一个“负担值”。</strong>越靠近教室正中间，负担值越小（最小是 −1，最好的座位）；
+  越靠边靠角，负担值越大（最大是 +1，最偏的座位）。</li>
+  <li><strong>给每个学生记一笔“历史负担”。</strong>他坐过的所有座位的负担值加起来就是他的历史负担。
+  总坐边角的学生，这个数会比别人高。</li>
+  <li><strong>每次排座，随机生成 100 个方案。</strong>其中 50 个是“照顾公平的随机”：历史负担高的学生先挑，
+  而且他抽中好座位的机会更大；另外 50 个是完全随机的，作为对照。</li>
+  <li><strong>给 100 个方案打分，选最好的一个。</strong>分数看的是：按这个方案排完之后，全班每个人的历史负担是不是接近。
+  越接近，分数越高（越接近 0）。</li>
+</ol>
+<p>所以，单看某一次，座位仍然是随机的，谁也猜不到；但连续看很多次，每个人坐好座位和差座位的机会是均衡的。</p>
+
+<h3>稍微详细一点</h3>
+<p>在第 3 步里，每个学生抽取每个座位的机会（权重）同时考虑三件事：</p>
+<table>
+  <tr><th style="width: 26%">考虑的事</th><th>含义</th></tr>
+  <tr><td>离黑板的远近要变</td><td>新座位和现在的座位相比，离黑板的距离差得越多，机会越大。坐前排的更容易换到后排，反过来也一样。</td></tr>
+  <tr><td>要换得远一些</td><td>新座位离现在的座位越远，机会越大。避免只是挪到隔壁。</td></tr>
+  <tr><td>不能总让同一个人吃亏</td><td>如果换到某个座位会让这名学生的历史负担高出全班平均，这个座位对他的机会就会被明显压低；
+  高出越多，压得越低。这一项的系数是前两项各自的两倍。</td></tr>
+</table>
+<p>在第 4 步里，分数 = −（全班历史负担的方差 + 最高与最低之差）。两项都是越小说明越平均，所以分数越接近 0 越好。</p>
+
+<h3>几个特殊情况是怎么处理的</h3>
+<ul>
+  <li><strong>第一次排座</strong>：大家都没有历史，结果基本就是随机的。</li>
+  <li><strong>学生比座位少</strong>：会优先用较好的座位，把最偏的座位空出来。</li>
+  <li><strong>新同学、请假回来的同学</strong>：历史负担从全班当时的平均值算起，不会被当成“欠着很多差座位”。</li>
+  <li><strong>允许抽到原来的座位</strong>：机会比较小，但不是零。</li>
+  <li><strong>换了座位表</strong>：以前的历史负担照常保留，按新的座位表继续累加。</li>
+</ul>
+
+<div class="tip">这套做法在 5 种不同形状的教室上做过模拟（坐满时，每种连续排 20 次，重复 12 组）：
+与接近完全随机的排法相比，全班历史负担的方差缩小到原来的五分之一左右，最高与最低之差缩小到不足一半；
+连续两次都坐在最偏的那四分之一座位上的情况，从大约 6% 降到 1% 左右。</div>
+
+<h3>它做不到的事</h3>
+<ul>
+  <li>它只按位置远近判断座位好坏，不知道谁近视、谁个子高、谁和谁不能坐一起。这些需要老师在预览时手动调整。</li>
+  <li>座位很少、空座又很多的小教室里，最好的座位偶尔会被空出来，可以手动把学生挪过去。</li>
+</ul>
+
+<footer>座位随机重排 版本 {{VERSION}} · 本说明随程序一同提供，在程序的“帮助”页也可以打开。</footer>
+
+</main>
+</body>
+</html>

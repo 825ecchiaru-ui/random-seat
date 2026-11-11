@@ -17,4 +17,6 @@ urlpatterns = [
     path("api/classes/<str:class_name>/assignments", views.assignments),
     path("api/classes/<str:class_name>/assignments/latest", views.latest_assignment),
     path("api/integrity", views.integrity),
+    path("api/app", views.app_info),
+    path("api/app/open", views.app_open),
 ]

@@ -4,8 +4,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 界面本身就是中文，不需要浏览器弹出"是否翻译此页" -->
+  <meta name="google" content="notranslate">
   <title>座位随机重排</title>
-  <link rel="stylesheet" href="{% static 'web/style.css' %}">
+  <link rel="icon" href="{% static 'web/favicon.ico' %}">
+  <link rel="stylesheet" href="{% static 'web/style.css' %}?v={{ version }}">
 </head>
 <body>
   <!-- 顶栏：选择班级，以及班级的新建、改名、删除 -->
@@ -25,6 +28,7 @@
     <button data-tab="layout">座位表</button>
     <button data-tab="roster">名单</button>
     <button data-tab="history">历史</button>
+    <button data-tab="help">帮助</button>
   </nav>
 
   <!-- 当前页面的内容，由app.js绘制 -->
@@ -32,12 +36,16 @@
 
   <footer>
     <button id="check" class="link">检查数据完整性</button>
+    <button id="open-data" class="link" hidden>打开数据文件夹</button>
+    <span id="version" class="hint"></span>
   </footer>
 
   <!-- 操作结果的提示条，以及查看学生历史用的弹窗 -->
   <div id="toast" role="status"></div>
   <dialog id="dialog"></dialog>
+  <!-- 询问框：输入名称、确认删除等 -->
+  <dialog id="ask"></dialog>
 
-  <script src="{% static 'web/app.js' %}"></script>
+  <script src="{% static 'web/app.js' %}?v={{ version }}"></script>
 </body>
 </html>

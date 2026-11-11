@@ -393,6 +393,21 @@ def test_server_failures():
         web_logger.propagate = True
         logging.getLogger("django.request").setLevel(logging.ERROR)
 
+    #程序信息：网页版不是桌面版，不透露数据文件夹的位置；"打开文件夹"这类桌面版功能不可用
+    info = call("get", "app")
+    assert info == {"version": m.__version__, "desktop": False, "data_dir": ""}
+    for what in ("data", "help", "C:\Windows", None):
+        expect_error("post", "app/open", {"what": what}, "Only available in the desktop app")
+    #模拟桌面版：只能打开固定的两个位置，不接受别的；使用说明文件不存在时报错而不是出别的问题
+    settings.DESKTOP_MODE = True
+    try:
+        assert call("get", "app")["desktop"] is True and call("get", "app")["data_dir"] == str(settings.DATA_DIR)
+        for what in ("C:\Windows", "../", "", None, 5):
+            expect_error("post", "app/open", {"what": what}, "Cannot open")
+        expect_error("post", "app/open", {"what": "help"}, "Cannot open")      #测试环境里没有使用说明文件
+    finally:
+        settings.DESKTOP_MODE = False
+
     #JSON嵌套层数极多、请求内容过大：各自被拒绝
     response = client.post("/api/classes", data="[" * 100000 + "]" * 100000, content_type="application/json")
     assert response.status_code == 400 and "nested too deeply" in json.loads(response.content)["error"]

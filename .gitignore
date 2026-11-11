@@ -10,6 +10,11 @@ CLAUDE.md
 # 本地保留的旧文件（被替换下来的文件按项目约定移到这里，只在本机留底）
 backup/
 
+# 桌面版打包的临时文件和最终产物（体积大，可以随时用desktop/build.py重新生成）
+desktop/build/
+desktop/dist/
+desktop/cache/
+
 # Python运行时生成的缓存
 __pycache__/
 *.py[cod]

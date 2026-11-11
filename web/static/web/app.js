@@ -12,7 +12,8 @@ const state = {
   classes: [],        //全部班级的名称
   name: null,         //当前班级的名称；没有班级时为null
   info: null,         //当前班级的信息（座位、学生、最近一次方案），来自服务器
-  tab: "arrange",     //当前页面：arrange排座、layout座位表、roster名单、history历史
+  tab: "arrange",     //当前页面：arrange排座、layout座位表、roster名单、history历史、help帮助
+  app: { desktop: false, version: "", data_dir: "" },   //程序信息：是否为桌面版、版本号、数据文件夹的位置
   preview: null,      //正在预览的方案{score, assignments}；没有预览时为null
   picked: null,       //预览中已点选、等待对调的座位"x,y"
   editor: null,       //座位表编辑器的内容{x0, y0, rows, cols, cells, dirty}
@@ -20,7 +21,29 @@ const state = {
   history: null,      //历史页的数据{assignments, has_more}；还没有读取时为null
   historyLimit: 20,   //历史页读取的方案数量
   shown: null,        //历史页正在查看的方案编号
+  //排座页的显示偏好，保存在这个浏览器里，下次打开仍然有效
+  showBurden: loadPreference("showBurden"),    //是否显示各座位的负担值（数字、底色和图例），默认不显示
+  showTable: loadPreference("showTable"),      //是否展开历史负担表格，默认折叠
+  //排座页座位图的缩放和位置：scale是缩放比例，x、y是座位图左上角在显示区域中的位置（像素）
+  //auto为true表示自动缩放到刚好完整显示；用户自己缩放或拖动之后变为false
+  view: { scale: 1, x: 0, y: 0, auto: true },
 };
+
+//读取、保存显示偏好。浏览器不允许保存时（例如无痕模式的某些设置）用默认值，不影响使用
+function loadPreference(name) {
+  try {
+    return localStorage.getItem("randomSeat." + name) === "1";
+  } catch (error) {
+    return false;
+  }
+}
+function savePreference(name, on) {
+  try {
+    localStorage.setItem("randomSeat." + name, on ? "1" : "0");
+  } catch (error) {
+    //保存不了只是下次打开时回到默认值，这里不需要处理
+  }
+}
 
 //座位坐标的最大值、每个班的座位数上限，与后端seat_random/config.py中的同名参数一致。
 //这里只用于界面上的提示和限制，真正的检查在后端
@@ -59,6 +82,38 @@ function toast(message, isError) {
   toastTimer = setTimeout(() => { box.className = ""; }, isError ? 6000 : 3000);
 }
 
+//弹出一个询问框，等用户回答。代替浏览器自带的输入框和确认框：样式与页面一致，说明文字也更清楚
+//  options.input为true时带一个输入框：点"确定"得到输入的文字，点"取消"或按Esc得到null
+//  否则是确认框：点"确定"得到true，点"取消"或按Esc得到false
+//  options.value是输入框里预先填好的文字；options.okText是确定按钮上的字；options.danger为true时确定按钮用红色
+//用法：const name = await ask("新班级的名称：", { input: true });
+function ask(message, options) {
+  options = options || {};
+  return new Promise((resolve) => {
+    const dialog = $("ask");
+    const input = options.input ? el("input", { type: "text", id: "ask-input", maxlength: "60", autocomplete: "off" }) : null;
+    if (input) input.value = options.value || "";
+    const finish = (result) => {
+      dialog.close();
+      resolve(result);
+    };
+    const cancel = () => finish(input ? null : false);
+    dialog.replaceChildren(el("form", { onsubmit: (event) => { event.preventDefault(); finish(input ? input.value : true); } },
+      el("p", { class: "ask-message", id: "ask-message" }, message),
+      input,
+      el("div", { class: "toolbar" },
+        el("button", { type: "button", id: "ask-cancel", onclick: cancel }, "取消"),
+        el("button", { type: "submit", id: "ask-ok", class: "primary" + (options.danger ? " danger-fill" : "") },
+          options.okText || "确定"))));
+    dialog.oncancel = (event) => { event.preventDefault(); cancel(); };     //按Esc等同于取消
+    dialog.showModal();
+    if (input) {
+      input.focus();
+      input.select();
+    }
+  });
+}
+
 //后端的错误信息是英文，这里转成中文提示；没有对应条目的原样显示
 const ERROR_TEXT = [
   [/^Unknown class: (.*)/, "班级不存在：$1"],
@@ -79,6 +134,8 @@ const ERROR_TEXT = [
   [/^Internal server error/, "服务器内部出错，详细信息已记录在运行服务的窗口中"],
   [/^Request is too large/, "一次提交的内容太多了"],
   [/^limit must be between/, "一次读取的记录数量超出范围"],
+  [/^Only available in the desktop app/, "这个功能只在桌面版程序中可用"],
+  [/^Cannot open.*/, "无法打开：文件或文件夹不存在"],
   [/^Not enough seats/, "座位数少于在班学生数，无法排座"],
   [/^Classroom has no seats/, "还没有设置座位表"],
   [/^Class has no students/, "班级里还没有在班的学生"],
@@ -179,6 +236,7 @@ async function selectClass(name) {
   state.draft = "";
   state.shown = null;
   state.historyLimit = 20;
+  state.view.auto = true;       //换班级后座位图不同，回到自动缩放
   if (name) setInfo((await api("GET", classPath())).class);
   location.hash = name ? encodeURIComponent(name) + "/" + state.tab : "";
 }
@@ -199,19 +257,151 @@ function render() {
   select.disabled = !state.classes.length;
   $("class-rename").disabled = $("class-delete").disabled = !state.name;
 
+  //页脚：版本号；桌面版多一个"打开数据文件夹"
+  $("version").textContent = state.app.version ? "版本 " + state.app.version : "";
+  $("open-data").hidden = !state.app.desktop;
+
   for (const button of $("tabs").children) {
     button.classList.toggle("active", button.dataset.tab === state.tab);
   }
 
   //页面内容
   let view;
-  if (!state.name) view = el("div", { class: "empty" }, "还没有班级。点击上方的“新建班级”开始。");
+  if (state.tab === "help") view = renderHelp();
+  else if (!state.name) view = renderWelcome();
   else if (!state.info) view = el("div", { class: "empty" }, "读取中…");
   else if (state.tab === "arrange") view = renderArrange();
   else if (state.tab === "layout") view = renderLayout();
   else if (state.tab === "roster") view = renderRoster();
   else view = renderHistory();
-  $("main").replaceChildren(view);
+  //班级还没有排过座时，页面上方显示新手引导条
+  $("main").replaceChildren(...[guideStrip(), view].filter(Boolean));
+  //座位图要等放进页面、有了实际尺寸之后才能计算缩放比例
+  if ($("viewport")) {
+    if (state.view.auto) fitView();
+    else applyView();
+  }
+}
+
+// --- 新手引导 ---
+
+//还没有任何班级时显示的欢迎页：说明四个步骤，并提供"新建班级"和"示例班级"两个入口
+function renderWelcome() {
+  const step = (number, title, text) => el("li", {}, el("span", { class: "step-number" }, String(number)),
+    el("div", {}, el("strong", {}, title), el("div", { class: "hint" }, text)));
+  return el("div", { class: "card welcome" },
+    el("h2", {}, "欢迎使用座位随机重排"),
+    el("p", { class: "empty-note" }, "还没有班级。按下面四步就能排出第一张座位表："),
+    el("ol", { class: "steps" },
+      step(1, "新建班级", "给班级起个名字，比如“高一3班”。可以建立多个班级，互不影响。"),
+      step(2, "画座位表", "在“座位表”页的格子上点一点，教室里哪儿有座位就点哪儿。"),
+      step(3, "添加名单", "在“名单”页把学生姓名粘贴进去，一行一个。"),
+      step(4, "排座", "在“排座”页点“生成新方案”，满意后点“确认并保存”。")),
+    el("div", { class: "toolbar" },
+      el("button", { class: "primary big", id: "welcome-new", onclick: newClass }, "新建班级"),
+      el("button", { class: "big", id: "welcome-demo", onclick: createDemo }, "先用示例班级试一试"),
+      el("button", { class: "link", onclick: () => { state.tab = "help"; render(); } }, "查看使用帮助")),
+    el("p", { class: "hint" }, "示例班级里有现成的座位表和 32 名“同学”，可以随便试，试完在右上角“删除班级”即可。"));
+}
+
+//新手引导条：班级还没有保存过排座方案时显示在页面上方，指出现在该做哪一步。保存第一次排座后不再出现
+function guideStrip() {
+  const info = state.info;
+  if (!state.name || !info || info.latest || state.tab === "help") return null;
+  const seats = info.seats.length;
+  const students = info.students.filter((s) => s.active).length;
+  //每一步：[名称, 是否已完成, 完成情况的说明, 对应的页面]
+  const steps = [
+    ["画座位表", seats > 0, seats ? "已有 " + seats + " 个座位" : "还没有座位", "layout"],
+    ["添加名单", students > 0, students ? "已有 " + students + " 名学生" : "还没有学生", "roster"],
+    ["生成并保存第一次排座", false, seats && students && seats < students ? "座位比学生少，需要先加座位" : "", "arrange"],
+  ];
+  const current = steps.findIndex((step) => !step[1]);       //第一个没完成的步骤
+  const [title, , , tab] = steps[current];
+  return el("div", { class: "guide", id: "guide" },
+    el("strong", {}, "新手引导"),
+    steps.map(([name, done, note], index) => el("span", {
+      class: "guide-step" + (done ? " done" : "") + (index === current ? " current" : ""),
+    }, (done ? "✓ " : (index + 1) + ". ") + name, note && el("span", { class: "hint" }, "（" + note + "）"))),
+    state.tab !== tab && el("button", { class: "small primary", id: "guide-go", onclick: () => {
+      state.tab = tab;
+      location.hash = encodeURIComponent(state.name) + "/" + tab;
+      render();
+    } }, "去" + title + " →"));
+}
+
+//建立一个示例班级：6排、每排3组双人座共36个座位，32名学生。供第一次使用的人直接体验
+function createDemo() {
+  act(async () => {
+    let name = "示例班级";
+    for (let number = 2; state.classes.includes(name); number++) name = "示例班级" + number;
+    name = (await api("POST", "classes", { name })).name;
+    const base = "classes/" + encodeURIComponent(name);
+    const positions = [];
+    for (let x = 1; x <= 6; x++) for (const y of [1, 2, 4, 5, 7, 8]) positions.push([x, y]);    //第3、6列空着当过道
+    await api("PUT", base + "/seats", { positions });
+    const students = [];
+    for (let number = 1; number <= 32; number++) students.push("同学" + String(number).padStart(2, "0"));
+    await api("POST", base + "/students", { student_ids: students });
+    state.classes = (await api("GET", "classes")).classes;
+    state.tab = "arrange";
+    await selectClass(name);
+    toast("示例班级已经建好。点“生成新方案”试试看");
+  });
+}
+
+// --- 帮助页 ---
+
+//帮助页的内容：[小标题, [段落, ...]]。写给不熟悉电脑的使用者，尽量用平常的话
+const HELP_SECTIONS = [
+  ["四步排出一张座位表", [
+    "第 1 步：点右上方的“新建班级”，输入班级名称。",
+    "第 2 步：点“座位表”，在格子上点击，教室里哪儿有座位就点哪儿（再点一次取消），点完后按“保存座位表”。黑板在最上方。",
+    "第 3 步：点“名单”，在左边的框里输入学生姓名，一行一个（可以从 Excel 或 Word 里复制后粘贴），然后按“添加”。",
+    "第 4 步：点“排座”，按“生成新方案”。这时只是预览，不满意可以按“重新生成”，也可以点两个座位把两名学生对调。满意后按“确认并保存”。",
+    "以后每次换座位，只需要重复第 4 步。",
+  ]],
+  ["排座页的操作", [
+    "对调学生：预览时先点一个座位，再点另一个座位，两人互换；点一个有人的座位再点一个空座，就是把人挪过去。",
+    "放大、缩小和移动：滚动鼠标滚轮可以放大缩小，按住鼠标拖动可以移动座位图，按“适应窗口”恢复原样。",
+    "排错了：按“撤销上一次排座”，回到上一次的座位。",
+    "“显示座位负担”和“展开历史负担表”默认是关着的，投屏给学生看时不会显示这些数字；想看时再打开。",
+  ]],
+  ["名单的维护", [
+    "新同学转来：在“名单”页添加即可。",
+    "同学转走或长期请假：按他那一行的“标记离开”。他不再参与排座，但以前的记录都保留；回来时按“标记回来”。",
+    "名字写错了：按“改名”。只有从来没有排过座的学生才能“删除”。",
+    "从文件导入：把名单存成文本文件（.txt，一行一个名字），按“从文本文件读取”选择它。",
+  ]],
+  ["它是怎么保证公平的", [
+    "每个座位有一个“负担值”：越靠近教室正中间越小（好座位），越靠边角越大（差座位）。",
+    "每个学生坐过的所有座位的负担值加起来，就是他的“历史负担”。一直坐边角的学生，历史负担会比别人高。",
+    "每次排座，程序会随机生成 100 个方案。生成时，历史负担高的学生优先挑选，并且更容易抽到好座位；同时尽量让每个人换到离黑板远近不同、离原位置较远的地方。",
+    "然后给每个方案打分：排完之后全班的历史负担越接近，分数越高。最后选出分数最高的那个方案。这就是“公平性分数”，越接近 0 越公平。",
+    "所以单看一次是随机的，长期看每个人坐好座位和差座位的机会是均衡的。",
+  ]],
+  ["数据和备份", [
+    "所有数据（班级、名单、每次的座位）都自动保存在这台电脑上，不需要手动保存，也不会上传到网络。",
+    "删除班级之前，程序会自动备份一次，保留最近 10 份。",
+    "换电脑：把“数据文件夹”整个复制到新电脑上同样的位置即可。",
+  ]],
+];
+
+function renderHelp() {
+  const app = state.app;
+  return el("div", { class: "card help" },
+    el("h2", {}, "使用帮助"),
+    app.desktop && el("div", { class: "toolbar" },
+      el("button", { class: "primary", id: "open-help", onclick: () => openLocal("help") }, "打开完整的使用说明（带图）"),
+      el("button", { onclick: () => openLocal("data") }, "打开数据文件夹")),
+    HELP_SECTIONS.map(([title, paragraphs]) => el("section", {},
+      el("h3", {}, title), paragraphs.map((text) => el("p", {}, text)))),
+    app.data_dir && el("p", { class: "hint" }, "数据文件夹的位置：" + app.data_dir));
+}
+
+//桌面版：让程序打开数据文件夹或使用说明文件
+function openLocal(what) {
+  act(async () => { await api("POST", "app/open", { what }); });
 }
 
 //画一个教室：黑板在上，座位按坐标排成网格
@@ -244,6 +434,133 @@ function burdenLegend() {
 }
 
 // --- 排座页 ---
+
+//座位图的缩放范围，以及自动缩放时最多放大到多少（座位很少时不至于放得过大）
+const MIN_SCALE = 0.05;
+const MAX_SCALE = 4;
+const MAX_AUTO_SCALE = 1.5;
+//对调动画的时长（毫秒）。系统设置了"减少动态效果"时不播放动画
+const SWAP_MS = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 450;
+
+//按state.view摆放座位图，并更新缩放比例的显示
+function applyView() {
+  const view = state.view;
+  $("stage").style.transform = "translate(" + view.x + "px, " + view.y + "px) scale(" + view.scale + ")";
+  $("zoom-label").textContent = Math.round(view.scale * 100) + "%";
+}
+
+//自动缩放：让整个座位图刚好完整地显示在显示区域里，并居中
+function fitView() {
+  const viewport = $("viewport");
+  const stage = $("stage");
+  const margin = 16;      //四周留出的空白
+  //offsetWidth、offsetHeight是座位图没有缩放时的原始尺寸
+  let scale = Math.min((viewport.clientWidth - 2 * margin) / stage.offsetWidth,
+    (viewport.clientHeight - 2 * margin) / stage.offsetHeight, MAX_AUTO_SCALE);
+  scale = Math.max(scale, MIN_SCALE);
+  state.view = {
+    scale,
+    x: (viewport.clientWidth - stage.offsetWidth * scale) / 2,
+    y: (viewport.clientHeight - stage.offsetHeight * scale) / 2,
+    auto: true,
+  };
+  applyView();
+}
+
+//以显示区域中的点(cx, cy)为中心缩放factor倍：缩放前后这个点对着座位图上的同一个位置
+function zoomAt(factor, cx, cy) {
+  const view = state.view;
+  const scale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, view.scale * factor));
+  view.x = cx - (cx - view.x) * scale / view.scale;
+  view.y = cy - (cy - view.y) * scale / view.scale;
+  view.scale = scale;
+  view.auto = false;
+  applyView();
+}
+
+//给座位图的显示区域加上滚轮缩放和拖动
+function enableZoomAndDrag(viewport) {
+  viewport.addEventListener("wheel", (event) => {
+    event.preventDefault();       //不让页面跟着滚动
+    const box = viewport.getBoundingClientRect();
+    zoomAt(event.deltaY < 0 ? 1.15 : 1 / 1.15, event.clientX - box.left, event.clientY - box.top);
+  }, { passive: false });
+
+  //拖动：按下后移动超过4像素才算拖动，否则仍是一次普通的点击（预览时点击座位用于对调）
+  let drag = null;
+  let dragEndTime = -1;       //上一次拖动结束（松开鼠标）的时刻
+  viewport.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0) return;
+    drag = { startX: event.clientX, startY: event.clientY, x: state.view.x, y: state.view.y, moved: false };
+  });
+  viewport.addEventListener("pointermove", (event) => {
+    if (!drag) return;
+    const dx = event.clientX - drag.startX;
+    const dy = event.clientY - drag.startY;
+    if (!drag.moved && Math.hypot(dx, dy) > 4) {
+      drag.moved = true;
+      viewport.setPointerCapture(event.pointerId);     //鼠标移出显示区域后仍然继续拖动
+      viewport.classList.add("dragging");
+    }
+    if (drag.moved) {
+      state.view.x = drag.x + dx;
+      state.view.y = drag.y + dy;
+      state.view.auto = false;
+      applyView();
+    }
+  });
+  const endDrag = (event) => {
+    if (drag && drag.moved) {
+      viewport.classList.remove("dragging");
+      dragEndTime = event.timeStamp;
+    }
+    drag = null;
+  };
+  viewport.addEventListener("pointerup", endDrag);
+  viewport.addEventListener("pointercancel", endDrag);
+  //拖动结束时松开鼠标会紧接着触发一次点击，这次点击不应当被当成点选座位。
+  //它与松开鼠标是同一个动作，发生的时刻几乎相同；而人再次点击至少要隔几十毫秒，据此区分
+  viewport.addEventListener("click", (event) => {
+    if (Math.abs(event.timeStamp - dragEndTime) < 5) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+  }, true);
+}
+
+//对调动画：让学生的名字从原座位"飞"到新座位。moves为[{from, to, name}, ...]，from、to是座位"x,y"
+//做法：在座位图上方临时放一块写着名字的牌子，从原座位移动到新座位；期间隐藏两个座位上原有的名字。
+//动画结束后由调用方重画页面，牌子随之消失，座位上显示新的名字
+function animateSwap(moves) {
+  const stage = $("stage");
+  if (!stage || !SWAP_MS) return Promise.resolve();
+  const scale = state.view.scale;
+  const origin = stage.getBoundingClientRect();
+  //座位在座位图中的位置和大小（换算回没有缩放时的尺寸）
+  const boxOf = (seatKey) => {
+    const seat = stage.querySelector('[data-seat="' + seatKey + '"]');
+    const rect = seat.getBoundingClientRect();
+    seat.querySelector(".who").style.visibility = "hidden";
+    seat.classList.remove("picked");
+    return { x: (rect.left - origin.left) / scale, y: (rect.top - origin.top) / scale,
+      width: rect.width / scale, height: rect.height / scale };
+  };
+  for (const move of moves) {
+    const from = boxOf(move.from);
+    const to = boxOf(move.to);
+    const ghost = el("div", { class: "ghost" }, move.name);
+    ghost.style.left = from.x + "px";
+    ghost.style.top = from.y + "px";
+    ghost.style.width = from.width + "px";
+    ghost.style.height = from.height + "px";
+    ghost.style.transitionDuration = SWAP_MS + "ms";
+    stage.append(ghost);
+    ghost.getBoundingClientRect();      //让浏览器先按起点位置排好，下一行的移动才会有过渡动画
+    ghost.style.transform = "translate(" + (to.x - from.x) + "px, " + (to.y - from.y) + "px)";
+  }
+  return new Promise((resolve) => setTimeout(resolve, SWAP_MS));
+}
+
 function renderArrange() {
   const info = state.info;
   const active = info.students.filter((s) => s.active);
@@ -287,26 +604,57 @@ function renderArrange() {
         : "还没有排过座"));
   }
 
+  //座位图。roomView返回的外层是带滚动条的容器，这里只要里面的教室本身，由下面的显示区域负责缩放和移动
   const room = roomView(info.seats.map((s) => [s.x, s.y]), (x, y) => {
     const seat = info.seats.find((s) => s.x === x && s.y === y);
     const id = shown[key(x, y)];
     const classes = ["seat"];
     if (!id) classes.push("vacant");
+    if (!state.showBurden) classes.push("plain");
     //预览中，坐的人与现在不同的座位加上橙色边框（两边都是空座不算不同）
     if (preview && (id || null) !== (current[key(x, y)] || null)) classes.push("moved");
     if (state.picked === key(x, y)) classes.push("picked");
     //预览时座位是可以点击的按钮，平时只是显示
     const cell = el(preview ? "button" : "div", {
       class: classes.join(" "),
-      title: "座位 (" + x + ", " + y + ")，座位负担 " + signed(seat.burden),
+      title: "座位 (" + x + ", " + y + ")" + (state.showBurden ? "，座位负担 " + signed(seat.burden) : ""),
       "data-seat": key(x, y),
       onclick: preview ? () => pickSeat(x, y) : null,
-    }, el("span", { class: "who" }, id || "空座"), el("span", { class: "sub" }, signed(seat.burden)));
-    cell.style.background = burdenColor(seat.burden);
+    }, el("span", { class: "who" }, id || "空座"),
+      //座位负担的数字和底色只在开启"显示座位负担"后出现
+      state.showBurden && el("span", { class: "sub" }, signed(seat.burden)));
+    if (state.showBurden) cell.style.background = burdenColor(seat.burden);
     return cell;
-  });
+  }).firstChild;
 
-  //右侧：每个学生的历史负担；预览时多出"排座后"和"变化"两列
+  const viewport = el("div", { class: "viewport", id: "viewport" }, el("div", { class: "stage", id: "stage" }, room));
+  enableZoomAndDrag(viewport);
+  //以显示区域的中心为准放大或缩小
+  const zoomButton = (factor) => () => zoomAt(factor, viewport.clientWidth / 2, viewport.clientHeight / 2);
+
+  const controls = el("div", { class: "toolbar view-controls" },
+    el("button", { class: "small", id: "zoom-out", title: "缩小", onclick: zoomButton(1 / 1.25) }, "−"),
+    el("span", { class: "zoom-label", id: "zoom-label" }, "100%"),
+    el("button", { class: "small", id: "zoom-in", title: "放大", onclick: zoomButton(1.25) }, "+"),
+    el("button", { class: "small", id: "zoom-fit", onclick: fitView }, "适应窗口"),
+    el("span", { class: "hint" }, "滚轮缩放，按住拖动可移动"),
+    el("span", { class: "spacer" }),
+    el("label", { class: "check" },
+      el("input", { type: "checkbox", id: "show-burden", checked: state.showBurden, onchange: (event) => {
+        state.showBurden = event.target.checked;
+        savePreference("showBurden", state.showBurden);
+        render();
+      } }), "显示座位负担"),
+    el("button", { class: "small", id: "toggle-table", onclick: () => {
+      state.showTable = !state.showTable;
+      savePreference("showTable", state.showTable);
+      render();
+    } }, state.showTable ? "收起历史负担表 ▸" : "展开历史负担表 ◂"));
+
+  const roomCard = el("div", { class: "card grow" }, controls, viewport, state.showBurden && burdenLegend());
+  if (!state.showTable) return el("div", {}, top, roomCard);
+
+  //右侧（展开时）：每个学生的历史负担；预览时多出"排座后"和"变化"两列
   const rows = active.map((s) => {
     const cells = [el("td", {}, s.student_id), el("td", { class: "num" }, signed(s.accum_burden))];
     if (preview) {
@@ -320,10 +668,11 @@ function renderArrange() {
   const head = [el("th", {}, "学生"), el("th", { class: "num" }, "历史负担")];
   if (preview) head.push(el("th", { class: "num" }, "排座后"), el("th", { class: "num" }, "变化"));
 
-  return el("div", {}, top, el("div", { class: "columns" },
-    el("div", { class: "card grow" }, room, burdenLegend()),
-    el("div", { class: "card side" }, el("h2", {}, "历史负担（" + active.length + " 人，" + info.seats.length + " 个座位）"),
-      el("table", {}, el("thead", {}, el("tr", {}, head)), el("tbody", {}, rows)))));
+  return el("div", {}, top, el("div", { class: "columns" }, roomCard,
+    el("div", { class: "card side", id: "burden-table" },
+      el("h2", {}, "历史负担（" + active.length + " 人，" + info.seats.length + " 个座位）"),
+      el("div", { class: "table-scroll" },
+        el("table", {}, el("thead", {}, el("tr", {}, head)), el("tbody", {}, rows))))));
 }
 
 // --- 座位表页 ---
@@ -500,8 +849,8 @@ function renderHistory() {
 // ---------- 5. 操作 ----------
 
 // --- 班级 ---
-function newClass() {
-  const name = prompt("新班级的名称：");
+async function newClass() {
+  const name = await ask("新班级的名称（例如：高一3班）：", { input: true });
   if (name === null) return;
   act(async () => {
     const result = await api("POST", "classes", { name });
@@ -510,8 +859,8 @@ function newClass() {
   });
 }
 
-function renameClass() {
-  const name = prompt("班级的新名称：", state.name);
+async function renameClass() {
+  const name = await ask("班级的新名称：", { input: true, value: state.name });
   if (name === null || name.trim() === state.name) return;
   act(async () => {
     const result = await api("PUT", classPath(), { name });
@@ -524,10 +873,11 @@ function renameClass() {
 }
 
 //删除班级无法恢复，要求输入班级名称确认，避免误点
-function deleteClass() {
+async function deleteClass() {
   const name = state.name;
-  const typed = prompt("删除班级会同时删除它的座位表、名单和全部排座历史，而且无法恢复。\n" +
-    "请输入班级名称“" + name + "”确认删除：");
+  const typed = await ask("删除班级会同时删除它的座位表、名单和全部排座历史。\n" +
+    "（删除前程序会自动备份一次数据。）\n\n请输入班级名称“" + name + "”确认删除：",
+    { input: true, okText: "删除", danger: true });
   if (typed === null) return;
   if (typed.trim() !== name) {
     toast("输入的名称不一致，没有删除", true);
@@ -562,6 +912,8 @@ function previewPlan() {
 }
 
 //预览中点击座位：第一次点击选中，再点另一个座位就对调两个座位上的学生，然后请服务器重新打分
+//对调时不直接改掉座位上的名字，而是播放名字移动到新座位的动画；动画播完、服务器也返回了新的分数之后，
+//再把页面换成新方案
 function pickSeat(x, y) {
   const here = key(x, y);
   if (state.picked === null) { state.picked = here; render(); return; }
@@ -573,13 +925,19 @@ function pickSeat(x, y) {
   const a = occupant(there);
   const b = occupant(here);
   if (!a && !b) { state.picked = here; render(); return; }     //两个都是空座，改为选中新点的这个
-  if (a) plan[a] = [x, y];
-  if (b) plan[b] = there.split(",").map(Number);
+  const moves = [];
+  if (a) { plan[a] = [x, y]; moves.push({ from: there, to: here, name: a }); }
+  if (b) { plan[b] = there.split(",").map(Number); moves.push({ from: here, to: there, name: b }); }
 
   //base是生成预览时班级最新方案的编号，原样发回；服务器发现数据已经变化时会拒绝
   act(async () => {
     state.picked = null;
-    state.preview = await api("POST", classPath("/score"), { plan, base: state.preview.base });
+    //动画和请求同时进行，两者都完成后再换上新方案。请求失败时act会显示提示并重画，页面回到对调前的样子
+    const [result] = await Promise.all([
+      api("POST", classPath("/score"), { plan, base: state.preview.base }),
+      animateSwap(moves),
+    ]);
+    state.preview = result;
   });
 }
 
@@ -591,9 +949,10 @@ function confirmPlan() {
   });
 }
 
-function rollback() {
+async function rollback() {
   const latest = state.info.latest;
-  if (!confirm("撤销最近一次排座（编号 " + latest.assignment_id + "）？\n这条记录会被删除，无法恢复。")) return;
+  if (!await ask("撤销最近一次排座（编号 " + latest.assignment_id + "）？\n这条记录会被删除，无法恢复。",
+    { okText: "撤销", danger: true })) return;
   act(async () => {
     //带上要撤销的方案编号：如果它已经不是最新的方案（例如已经被撤销过），服务器会拒绝
     const result = await api("DELETE", classPath("/assignments/latest"), { assignment_id: latest.assignment_id });
@@ -603,7 +962,7 @@ function rollback() {
 }
 
 // --- 座位表 ---
-function saveSeats() {
+async function saveSeats() {
   const cells = state.editor.cells;
   const positions = [...cells].map((cell) => cell.split(",").map(Number))
     .sort((p, q) => p[0] - q[0] || p[1] - q[1]);
@@ -614,7 +973,8 @@ function saveSeats() {
 
   //提醒：现在坐着人的座位如果被去掉，这些学生会暂时没有座位
   const lost = state.info.students.filter((s) => s.current_seat && !cells.has(key(...s.current_seat))).length;
-  if (lost && !confirm("有 " + lost + " 名学生现在的座位将被去掉，他们会暂时没有座位（历史负担保留）。\n继续保存吗？")) return;
+  if (lost && !await ask("有 " + lost + " 名学生现在的座位将被去掉，他们会暂时没有座位（历史负担保留）。\n继续保存吗？",
+    { okText: "继续保存" })) return;
 
   act(async () => {
     const result = await api("PUT", classPath("/seats"), { positions });
@@ -669,8 +1029,8 @@ function readNamesFile(event) {
   reader.readAsArrayBuffer(file);
 }
 
-function renameStudent(id) {
-  const name = prompt("新的学号或姓名：", id);
+async function renameStudent(id) {
+  const name = await ask("新的学号或姓名：", { input: true, value: id });
   if (name === null || name.trim() === id) return;
   act(async () => setInfo((await api("PUT", studentPath(id), { student_id: name })).class));
 }
@@ -679,8 +1039,8 @@ function setActive(id, active) {
   act(async () => setInfo((await api("PUT", studentPath(id), { active })).class));
 }
 
-function deleteStudent(id) {
-  if (!confirm("从名单中删除 " + id + "？")) return;
+async function deleteStudent(id) {
+  if (!await ask("从名单中删除 " + id + "？", { okText: "删除", danger: true })) return;
   act(async () => setInfo((await api("DELETE", studentPath(id))).class));
 }
 
@@ -712,11 +1072,15 @@ function checkIntegrity() {
 }
 
 // ---------- 启动 ----------
+window.addEventListener("resize", () => {
+  if ($("viewport") && state.view.auto) fitView();
+});
 $("class-select").addEventListener("change", (event) => act(() => selectClass(event.target.value)));
 $("class-new").addEventListener("click", newClass);
 $("class-rename").addEventListener("click", renameClass);
 $("class-delete").addEventListener("click", deleteClass);
 $("check").addEventListener("click", checkIntegrity);
+$("open-data").addEventListener("click", () => openLocal("data"));
 for (const button of $("tabs").children) {
   button.addEventListener("click", () => {
     state.tab = button.dataset.tab;
@@ -727,6 +1091,7 @@ for (const button of $("tabs").children) {
 
 //打开网页时：读取班级列表。网址"#班级/页面"里记着上次所在的班级和页面，有的话回到那里
 act(async () => {
+  state.app = await api("GET", "app");
   state.classes = (await api("GET", "classes")).classes;
   const [hashName, hashTab] = location.hash.slice(1).split("/");
   let wanted = null;
@@ -735,6 +1100,6 @@ act(async () => {
   } catch (error) {
     wanted = null;      //网址被手动改坏时，当作没有指定班级
   }
-  if (["arrange", "layout", "roster", "history"].includes(hashTab)) state.tab = hashTab;
+  if (["arrange", "layout", "roster", "history", "help"].includes(hashTab)) state.tab = hashTab;
   await selectClass(state.classes.includes(wanted) ? wanted : state.classes[0] || null);
 });
