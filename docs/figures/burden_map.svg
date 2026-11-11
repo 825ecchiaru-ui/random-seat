@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 388" width="660" height="388" font-family='system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif'>
+<rect width="660" height="388" fill="#fcfcfb"/>
+<text x="30.0" y="28.0" font-size="15" fill="#0b0b0b" text-anchor="start" font-weight="600">example.csv布局中各座位的负担值</text>
+<text x="30.0" y="47.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">越靠近全部座位的几何中心负担越小（−1），越远越大（+1）</text>
+<rect x="30" y="78" width="598" height="8" rx="2" fill="#52514e"/>
+<text x="330.0" y="72.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">黑板</text>
+<rect x="130" y="98" width="48" height="34" rx="4" fill="#eaa7a5"/>
+<text x="154.0" y="119.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">+0.43</text>
+<rect x="180" y="98" width="48" height="34" rx="4" fill="#eedad7"/>
+<text x="204.0" y="119.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">+0.13</text>
+<rect x="280" y="98" width="48" height="34" rx="4" fill="#bacee6"/>
+<text x="304.0" y="119.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">−0.28</text>
+<rect x="330" y="98" width="48" height="34" rx="4" fill="#bacee6"/>
+<text x="354.0" y="119.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">−0.28</text>
+<rect x="430" y="98" width="48" height="34" rx="4" fill="#eedad7"/>
+<text x="454.0" y="119.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">+0.13</text>
+<rect x="480" y="98" width="48" height="34" rx="4" fill="#eaa7a5"/>
+<text x="504.0" y="119.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">+0.43</text>
+<rect x="30" y="134" width="48" height="34" rx="4" fill="#e34948"/>
+<text x="54.0" y="155.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="normal">+1.00</text>
+<rect x="130" y="134" width="48" height="34" rx="4" fill="#edc7c4"/>
+<text x="154.0" y="155.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">+0.24</text>
+<rect x="180" y="134" width="48" height="34" rx="4" fill="#d9e1e9"/>
+<text x="204.0" y="155.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">−0.12</text>
+<rect x="280" y="134" width="48" height="34" rx="4" fill="#6da1dd"/>
+<text x="304.0" y="155.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="normal">−0.66</text>
+<rect x="330" y="134" width="48" height="34" rx="4" fill="#6da1dd"/>
+<text x="354.0" y="155.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="normal">−0.66</text>
+<rect x="430" y="134" width="48" height="34" rx="4" fill="#d9e1e9"/>
+<text x="454.0" y="155.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">−0.12</text>
+<rect x="480" y="134" width="48" height="34" rx="4" fill="#edc7c4"/>
+<text x="504.0" y="155.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">+0.24</text>
+<rect x="580" y="134" width="48" height="34" rx="4" fill="#e34948"/>
+<text x="604.0" y="155.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="normal">+1.00</text>
+<rect x="30" y="170" width="48" height="34" rx="4" fill="#e45453"/>
+<text x="54.0" y="191.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="normal">+0.93</text>
+<rect x="130" y="170" width="48" height="34" rx="4" fill="#eed7d5"/>
+<text x="154.0" y="191.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">+0.14</text>
+<rect x="180" y="170" width="48" height="34" rx="4" fill="#bed1e6"/>
+<text x="204.0" y="191.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">−0.25</text>
+<rect x="280" y="170" width="48" height="34" rx="4" fill="#2a78d6"/>
+<text x="304.0" y="191.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="normal">−1.00</text>
+<rect x="330" y="170" width="48" height="34" rx="4" fill="#2a78d6"/>
+<text x="354.0" y="191.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="normal">−1.00</text>
+<rect x="430" y="170" width="48" height="34" rx="4" fill="#bed1e6"/>
+<text x="454.0" y="191.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">−0.25</text>
+<rect x="480" y="170" width="48" height="34" rx="4" fill="#eed7d5"/>
+<text x="504.0" y="191.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">+0.14</text>
+<rect x="580" y="170" width="48" height="34" rx="4" fill="#e45453"/>
+<text x="604.0" y="191.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="normal">+0.93</text>
+<rect x="30" y="206" width="48" height="34" rx="4" fill="#e45352"/>
+<text x="54.0" y="227.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="normal">+0.94</text>
+<rect x="130" y="206" width="48" height="34" rx="4" fill="#eed6d3"/>
+<text x="154.0" y="227.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">+0.15</text>
+<rect x="180" y="206" width="48" height="34" rx="4" fill="#c0d2e7"/>
+<text x="204.0" y="227.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">−0.24</text>
+<rect x="280" y="206" width="48" height="34" rx="4" fill="#327dd7"/>
+<text x="304.0" y="227.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="normal">−0.96</text>
+<rect x="330" y="206" width="48" height="34" rx="4" fill="#327dd7"/>
+<text x="354.0" y="227.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="normal">−0.96</text>
+<rect x="430" y="206" width="48" height="34" rx="4" fill="#c0d2e7"/>
+<text x="454.0" y="227.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">−0.24</text>
+<rect x="480" y="206" width="48" height="34" rx="4" fill="#eed6d3"/>
+<text x="504.0" y="227.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">+0.15</text>
+<rect x="580" y="206" width="48" height="34" rx="4" fill="#e45352"/>
+<text x="604.0" y="227.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="normal">+0.94</text>
+<rect x="130" y="242" width="48" height="34" rx="4" fill="#edc3c1"/>
+<text x="154.0" y="263.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">+0.27</text>
+<rect x="180" y="242" width="48" height="34" rx="4" fill="#dfe5ea"/>
+<text x="204.0" y="263.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">−0.09</text>
+<rect x="280" y="242" width="48" height="34" rx="4" fill="#78a7df"/>
+<text x="304.0" y="263.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="normal">−0.61</text>
+<rect x="330" y="242" width="48" height="34" rx="4" fill="#78a7df"/>
+<text x="354.0" y="263.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="normal">−0.61</text>
+<rect x="430" y="242" width="48" height="34" rx="4" fill="#dfe5ea"/>
+<text x="454.0" y="263.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">−0.09</text>
+<rect x="480" y="242" width="48" height="34" rx="4" fill="#edc3c1"/>
+<text x="504.0" y="263.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">+0.27</text>
+<rect x="130" y="278" width="48" height="34" rx="4" fill="#eaa29f"/>
+<text x="154.0" y="299.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">+0.47</text>
+<rect x="180" y="278" width="48" height="34" rx="4" fill="#eed4d1"/>
+<text x="204.0" y="299.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">+0.17</text>
+<rect x="280" y="278" width="48" height="34" rx="4" fill="#c5d5e7"/>
+<text x="304.0" y="299.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">−0.22</text>
+<rect x="330" y="278" width="48" height="34" rx="4" fill="#c5d5e7"/>
+<text x="354.0" y="299.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">−0.22</text>
+<rect x="430" y="278" width="48" height="34" rx="4" fill="#eed4d1"/>
+<text x="454.0" y="299.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">+0.17</text>
+<rect x="480" y="278" width="48" height="34" rx="4" fill="#eaa29f"/>
+<text x="504.0" y="299.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">+0.47</text>
+<rect x="30.0" y="360" width="5.5" height="10" fill="#2e7ad6"/>
+<rect x="35.0" y="360" width="5.5" height="10" fill="#367fd7"/>
+<rect x="40.0" y="360" width="5.5" height="10" fill="#3f84d8"/>
+<rect x="45.0" y="360" width="5.5" height="10" fill="#4789d9"/>
+<rect x="50.0" y="360" width="5.5" height="10" fill="#4f8eda"/>
+<rect x="55.0" y="360" width="5.5" height="10" fill="#5793db"/>
+<rect x="60.0" y="360" width="5.5" height="10" fill="#6098dc"/>
+<rect x="65.0" y="360" width="5.5" height="10" fill="#689ddd"/>
+<rect x="70.0" y="360" width="5.5" height="10" fill="#70a2de"/>
+<rect x="75.0" y="360" width="5.5" height="10" fill="#78a7df"/>
+<rect x="80.0" y="360" width="5.5" height="10" fill="#81ace0"/>
+<rect x="85.0" y="360" width="5.5" height="10" fill="#89b1e1"/>
+<rect x="90.0" y="360" width="5.5" height="10" fill="#91b6e1"/>
+<rect x="95.0" y="360" width="5.5" height="10" fill="#99bbe2"/>
+<rect x="100.0" y="360" width="5.5" height="10" fill="#a2c0e3"/>
+<rect x="105.0" y="360" width="5.5" height="10" fill="#aac5e4"/>
+<rect x="110.0" y="360" width="5.5" height="10" fill="#b2cae5"/>
+<rect x="115.0" y="360" width="5.5" height="10" fill="#bacfe6"/>
+<rect x="120.0" y="360" width="5.5" height="10" fill="#c3d4e7"/>
+<rect x="125.0" y="360" width="5.5" height="10" fill="#cbd9e8"/>
+<rect x="130.0" y="360" width="5.5" height="10" fill="#d3dee9"/>
+<rect x="135.0" y="360" width="5.5" height="10" fill="#dbe3ea"/>
+<rect x="140.0" y="360" width="5.5" height="10" fill="#e4e8eb"/>
+<rect x="145.0" y="360" width="5.5" height="10" fill="#ecedec"/>
+<rect x="150.0" y="360" width="5.5" height="10" fill="#f0ece9"/>
+<rect x="155.0" y="360" width="5.5" height="10" fill="#efe5e2"/>
+<rect x="160.0" y="360" width="5.5" height="10" fill="#efdedb"/>
+<rect x="165.0" y="360" width="5.5" height="10" fill="#eed7d4"/>
+<rect x="170.0" y="360" width="5.5" height="10" fill="#eed0cd"/>
+<rect x="175.0" y="360" width="5.5" height="10" fill="#edc9c6"/>
+<rect x="180.0" y="360" width="5.5" height="10" fill="#ecc2c0"/>
+<rect x="185.0" y="360" width="5.5" height="10" fill="#ecbbb9"/>
+<rect x="190.0" y="360" width="5.5" height="10" fill="#ebb4b2"/>
+<rect x="195.0" y="360" width="5.5" height="10" fill="#ebadab"/>
+<rect x="200.0" y="360" width="5.5" height="10" fill="#eaa6a4"/>
+<rect x="205.0" y="360" width="5.5" height="10" fill="#ea9f9d"/>
+<rect x="210.0" y="360" width="5.5" height="10" fill="#e99997"/>
+<rect x="215.0" y="360" width="5.5" height="10" fill="#e99290"/>
+<rect x="220.0" y="360" width="5.5" height="10" fill="#e88b89"/>
+<rect x="225.0" y="360" width="5.5" height="10" fill="#e88482"/>
+<rect x="230.0" y="360" width="5.5" height="10" fill="#e77d7b"/>
+<rect x="235.0" y="360" width="5.5" height="10" fill="#e77674"/>
+<rect x="240.0" y="360" width="5.5" height="10" fill="#e66f6e"/>
+<rect x="245.0" y="360" width="5.5" height="10" fill="#e56867"/>
+<rect x="250.0" y="360" width="5.5" height="10" fill="#e56160"/>
+<rect x="255.0" y="360" width="5.5" height="10" fill="#e45a59"/>
+<rect x="260.0" y="360" width="5.5" height="10" fill="#e45352"/>
+<rect x="265.0" y="360" width="5.5" height="10" fill="#e34c4b"/>
+<text x="30.0" y="354.0" font-size="11" fill="#898781" text-anchor="start" font-weight="normal">−1 好座位</text>
+<text x="150.0" y="354.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">0</text>
+<text x="270.0" y="354.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">差座位 +1</text>
+</svg>

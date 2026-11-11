@@ -1,0 +1,43 @@
+{% load static %}
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>座位随机重排</title>
+  <link rel="stylesheet" href="{% static 'web/style.css' %}">
+</head>
+<body>
+  <!-- 顶栏：选择班级，以及班级的新建、改名、删除 -->
+  <header class="topbar">
+    <h1>座位随机重排</h1>
+    <label class="class-picker">班级
+      <select id="class-select"></select>
+    </label>
+    <button id="class-new">新建班级</button>
+    <button id="class-rename">改名</button>
+    <button id="class-delete" class="danger">删除班级</button>
+  </header>
+
+  <!-- 四个页面的切换按钮 -->
+  <nav class="tabs" id="tabs">
+    <button data-tab="arrange">排座</button>
+    <button data-tab="layout">座位表</button>
+    <button data-tab="roster">名单</button>
+    <button data-tab="history">历史</button>
+  </nav>
+
+  <!-- 当前页面的内容，由app.js绘制 -->
+  <main id="main"></main>
+
+  <footer>
+    <button id="check" class="link">检查数据完整性</button>
+  </footer>
+
+  <!-- 操作结果的提示条，以及查看学生历史用的弹窗 -->
+  <div id="toast" role="status"></div>
+  <dialog id="dialog"></dialog>
+
+  <script src="{% static 'web/app.js' %}"></script>
+</body>
+</html>

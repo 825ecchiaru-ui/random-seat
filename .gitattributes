@@ -1,0 +1,7 @@
+# 文本文件在仓库中统一使用LF换行，避免Windows和其他系统之间出现"整个文件都被修改"的假差异
+* text=auto
+
+# 二进制文件：不做换行转换，也不显示文本差异
+*.xlsx binary
+*.png binary
+*.db binary

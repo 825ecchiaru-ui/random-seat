@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="798" viewBox="0 0 1040 798" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="12" fill="#1e293b">
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+<path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+<path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+<style>
+.code { font-family: Consolas, 'Courier New', monospace; font-size: 11.5px; }
+.muted { fill: #64748b; font-size: 11px; }
+</style></defs>
+<rect width="1040" height="798" fill="#ffffff"/>
+<text x="20" y="30" font-size="17" font-weight="bold">前端调用规划：四个主要操作各自调用哪些后端接口</text>
+<rect x="20" y="104" width="1000" height="178" fill="#f8fafc" stroke="#e2e8f0" rx="6"/>
+<rect x="20" y="292" width="1000" height="130" fill="#f8fafc" stroke="#e2e8f0" rx="6"/>
+<rect x="20" y="432" width="1000" height="202" fill="#f8fafc" stroke="#e2e8f0" rx="6"/>
+<rect x="20" y="644" width="1000" height="106" fill="#f8fafc" stroke="#e2e8f0" rx="6"/>
+<line x1="130" y1="92" x2="130" y2="754" stroke="#cbd5e1" stroke-dasharray="4 4"/>
+<rect x="30" y="46" width="200" height="46" fill="#e0e7ff" stroke="#94a3b8" rx="6"/>
+<text x="130" y="66" text-anchor="middle" font-size="13" font-weight="bold">浏览器</text>
+<text x="130" y="83" text-anchor="middle" class="muted">index.html + JS</text>
+<line x1="400" y1="92" x2="400" y2="754" stroke="#cbd5e1" stroke-dasharray="4 4"/>
+<rect x="300" y="46" width="200" height="46" fill="#f1f5f9" stroke="#94a3b8" rx="6"/>
+<text x="400" y="66" text-anchor="middle" font-size="13" font-weight="bold">server.py（新增）</text>
+<text x="400" y="83" text-anchor="middle" class="muted">把请求转成后端调用</text>
+<line x1="660" y1="92" x2="660" y2="754" stroke="#cbd5e1" stroke-dasharray="4 4"/>
+<rect x="560" y="46" width="200" height="46" fill="#fef3c7" stroke="#94a3b8" rx="6"/>
+<text x="660" y="66" text-anchor="middle" font-size="13" font-weight="bold">SeatAllocator</text>
+<text x="660" y="83" text-anchor="middle" class="muted">排座算法</text>
+<line x1="900" y1="92" x2="900" y2="754" stroke="#cbd5e1" stroke-dasharray="4 4"/>
+<rect x="800" y="46" width="200" height="46" fill="#dcfce7" stroke="#94a3b8" rx="6"/>
+<text x="900" y="66" text-anchor="middle" font-size="13" font-weight="bold">HistoryManager</text>
+<text x="900" y="83" text-anchor="middle" class="muted">SQLite 数据库</text>
+<text x="32" y="122" font-size="13" font-weight="bold">① 打开班级</text>
+<line x1="130" y1="148" x2="398" y2="148" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="138" y="131" width="163" height="14" fill="#f8fafc"/>
+<text x="142" y="142" class="code">GET /api/classes/{班级}</text>
+<line x1="400" y1="172" x2="898" y2="172" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="408" y="155" width="166" height="14" fill="#f8fafc"/>
+<text x="412" y="166" class="code" fill="#475569">get_seats · get_students</text>
+<rect x="408" y="182" width="200" height="20" fill="#ffffff" stroke="#cbd5e1" rx="3"/>
+<text x="416" y="196" class="muted">搭建教室，计算黑板距离和座位负担</text>
+<line x1="400" y1="220" x2="898" y2="220" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="408" y="203" width="74" height="14" fill="#f8fafc"/>
+<text x="412" y="214" class="code" fill="#475569">load_state</text>
+<line x1="400" y1="244" x2="658" y2="244" stroke="#b91c1c" stroke-width="1.5" marker-end="url(#r)"/>
+<rect x="408" y="227" width="94" height="14" fill="#f8fafc"/>
+<text x="412" y="238" class="code" fill="#b91c1c">restore_state</text>
+<line x1="400" y1="268" x2="132" y2="268" stroke="#475569" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#a)"/>
+<text x="142" y="262" class="muted">返回 JSON：座位、负担、学生名单、当前座位</text>
+<text x="32" y="310" font-size="13" font-weight="bold">② 生成新方案（只预览，不应用、不保存）</text>
+<line x1="130" y1="336" x2="398" y2="336" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="138" y="319" width="230" height="14" fill="#f8fafc"/>
+<text x="142" y="330" class="code">POST /api/classes/{班级}/preview</text>
+<rect x="408" y="346" width="142" height="20" fill="#ffffff" stroke="#cbd5e1" rx="3"/>
+<text x="416" y="360" class="muted">同①，从数据库重建状态</text>
+<line x1="400" y1="384" x2="658" y2="384" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="408" y="367" width="153" height="14" fill="#f8fafc"/>
+<text x="412" y="378" class="code" fill="#475569">select_best_assignment</text>
+<line x1="400" y1="408" x2="132" y2="408" stroke="#475569" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#a)"/>
+<text x="142" y="402" class="muted">返回 JSON：方案、分数</text>
+<text x="32" y="450" font-size="13" font-weight="bold">③ 确认方案（浏览器把要确认的方案发回，应用并保存）</text>
+<line x1="130" y1="476" x2="398" y2="476" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="138" y="459" width="260" height="14" fill="#f8fafc"/>
+<text x="142" y="470" class="code">POST /api/classes/{班级}/assignments</text>
+<rect x="408" y="486" width="255" height="20" fill="#ffffff" stroke="#cbd5e1" rx="3"/>
+<text x="416" y="500" class="muted">同①重建状态；把方案转成 {Seat: Student}</text>
+<line x1="400" y1="524" x2="658" y2="524" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="408" y="507" width="114" height="14" fill="#f8fafc"/>
+<text x="412" y="518" class="code" fill="#475569">score_assignment</text>
+<rect x="408" y="534" width="230" height="20" fill="#ffffff" stroke="#cbd5e1" rx="3"/>
+<text x="416" y="548" class="muted">SeatAssignment.set_seat_assignment</text>
+<line x1="400" y1="572" x2="658" y2="572" stroke="#b91c1c" stroke-width="1.5" marker-end="url(#r)"/>
+<rect x="408" y="555" width="114" height="14" fill="#f8fafc"/>
+<text x="412" y="566" class="code" fill="#b91c1c">apply_assignment</text>
+<line x1="400" y1="596" x2="898" y2="596" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="408" y="579" width="120" height="14" fill="#f8fafc"/>
+<text x="412" y="590" class="code" fill="#475569">record_assignment</text>
+<line x1="400" y1="620" x2="132" y2="620" stroke="#475569" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#a)"/>
+<text x="142" y="614" class="muted">返回 JSON：方案编号、保存后的状态</text>
+<text x="32" y="662" font-size="13" font-weight="bold">④ 撤销上一次排座</text>
+<line x1="130" y1="688" x2="398" y2="688" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="138" y="671" width="326" height="14" fill="#f8fafc"/>
+<text x="142" y="682" class="code">DELETE /api/classes/{班级}/assignments/latest</text>
+<line x1="400" y1="712" x2="898" y2="712" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="408" y="695" width="94" height="14" fill="#f8fafc"/>
+<text x="412" y="706" class="code" fill="#475569">rollback_last</text>
+<line x1="400" y1="736" x2="132" y2="736" stroke="#475569" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#a)"/>
+<text x="142" y="730" class="muted">返回 JSON：回退后的状态（同①）</text>
+<line x1="32" y1="774" x2="72" y2="774" stroke="#475569" stroke-width="1.5" marker-end="url(#a)"/>
+<text x="80" y="778" class="muted">请求或只读调用</text>
+<line x1="200" y1="774" x2="240" y2="774" stroke="#475569" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#a)"/>
+<text x="248" y="778" class="muted">返回给浏览器</text>
+<line x1="356" y1="774" x2="396" y2="774" stroke="#b91c1c" stroke-width="1.5" marker-end="url(#r)"/>
+<text x="404" y="778" class="muted">修改学生和座位状态的调用</text>
+<text x="600" y="778" class="muted">server.py 不保留状态：每个请求都从数据库重建，处理完即关闭数据库</text>
+</svg>

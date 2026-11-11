@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 370" width="820" height="370" font-family='system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif'>
+<rect width="820" height="370" fill="#fcfcfb"/>
+<text x="30.0" y="28.0" font-size="15" fill="#0b0b0b" text-anchor="start" font-weight="600">连续排座20轮后全班历史负担的方差与极差</text>
+<text x="30.0" y="47.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">数值越小越公平；examples下5个布局、每种情况12次模拟的平均值</text>
+<rect x="30" y="65" width="10" height="10" rx="2" fill="#1baf7a"/>
+<text x="45.0" y="74.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">只用纯随机候选</text>
+<rect x="154.5" y="65" width="10" height="10" rx="2" fill="#2a78d6"/>
+<text x="169.5" y="74.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">原设计（线性加和）</text>
+<rect x="304.0" y="65" width="10" height="10" rx="2" fill="#eb6834"/>
+<text x="319.0" y="74.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">现设计（指数形式）</text>
+<text x="60.0" y="110.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">方差</text>
+<line x1="60" y1="326.0" x2="380" y2="326.0" stroke="#c3c2b7" stroke-width="1"/>
+<text x="52.0" y="330.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">0</text>
+<line x1="60" y1="276.0" x2="380" y2="276.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="52.0" y="280.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">0.2</text>
+<line x1="60" y1="226.0" x2="380" y2="226.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="52.0" y="230.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">0.4</text>
+<line x1="60" y1="176.0" x2="380" y2="176.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="52.0" y="180.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">0.6</text>
+<line x1="60" y1="126.0" x2="380" y2="126.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="52.0" y="130.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">0.8</text>
+<path d="M75.3,326.0 V179.4 Q75.3,175.4 79.3,175.4 H95.3 Q99.3,175.4 99.3,179.4 V326.0 Z" fill="#1baf7a"/>
+<text x="87.3" y="170.4" font-size="10" fill="#52514e" text-anchor="middle" font-weight="normal">0.60</text>
+<path d="M101.3,326.0 V183.6 Q101.3,179.6 105.3,179.6 H121.3 Q125.3,179.6 125.3,183.6 V326.0 Z" fill="#2a78d6"/>
+<text x="113.3" y="174.6" font-size="10" fill="#52514e" text-anchor="middle" font-weight="normal">0.59</text>
+<path d="M127.3,326.0 V301.8 Q127.3,297.8 131.3,297.8 H147.3 Q151.3,297.8 151.3,301.8 V326.0 Z" fill="#eb6834"/>
+<text x="139.3" y="292.8" font-size="10" fill="#52514e" text-anchor="middle" font-weight="normal">0.11</text>
+<text x="113.3" y="344.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="normal">满员</text>
+<path d="M182.0,326.0 V207.5 Q182.0,203.5 186.0,203.5 H202.0 Q206.0,203.5 206.0,207.5 V326.0 Z" fill="#1baf7a"/>
+<text x="194.0" y="198.5" font-size="10" fill="#52514e" text-anchor="middle" font-weight="normal">0.49</text>
+<path d="M208.0,326.0 V230.7 Q208.0,226.7 212.0,226.7 H228.0 Q232.0,226.7 232.0,230.7 V326.0 Z" fill="#2a78d6"/>
+<text x="220.0" y="221.7" font-size="10" fill="#52514e" text-anchor="middle" font-weight="normal">0.40</text>
+<path d="M234.0,326.0 V308.7 Q234.0,304.7 238.0,304.7 H254.0 Q258.0,304.7 258.0,308.7 V326.0 Z" fill="#eb6834"/>
+<text x="246.0" y="299.7" font-size="10" fill="#52514e" text-anchor="middle" font-weight="normal">0.09</text>
+<text x="220.0" y="344.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="normal">85%入座</text>
+<path d="M288.7,326.0 V234.2 Q288.7,230.2 292.7,230.2 H308.7 Q312.7,230.2 312.7,234.2 V326.0 Z" fill="#1baf7a"/>
+<text x="300.7" y="225.2" font-size="10" fill="#52514e" text-anchor="middle" font-weight="normal">0.38</text>
+<path d="M314.7,326.0 V259.2 Q314.7,255.2 318.7,255.2 H334.7 Q338.7,255.2 338.7,259.2 V326.0 Z" fill="#2a78d6"/>
+<text x="326.7" y="250.2" font-size="10" fill="#52514e" text-anchor="middle" font-weight="normal">0.28</text>
+<path d="M340.7,326.0 V313.3 Q340.7,309.3 344.7,309.3 H360.7 Q364.7,309.3 364.7,313.3 V326.0 Z" fill="#eb6834"/>
+<text x="352.7" y="304.3" font-size="10" fill="#52514e" text-anchor="middle" font-weight="normal">0.07</text>
+<text x="326.7" y="344.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="normal">70%入座</text>
+<text x="470.0" y="110.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">极差</text>
+<line x1="470" y1="326.0" x2="790" y2="326.0" stroke="#c3c2b7" stroke-width="1"/>
+<text x="462.0" y="330.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">0</text>
+<line x1="470" y1="276.0" x2="790" y2="276.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="462.0" y="280.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">1</text>
+<line x1="470" y1="226.0" x2="790" y2="226.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="462.0" y="230.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">2</text>
+<line x1="470" y1="176.0" x2="790" y2="176.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="462.0" y="180.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">3</text>
+<line x1="470" y1="126.0" x2="790" y2="126.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="462.0" y="130.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">4</text>
+<path d="M485.3,326.0 V188.9 Q485.3,184.9 489.3,184.9 H505.3 Q509.3,184.9 509.3,188.9 V326.0 Z" fill="#1baf7a"/>
+<text x="497.3" y="179.9" font-size="10" fill="#52514e" text-anchor="middle" font-weight="normal">2.82</text>
+<path d="M511.3,326.0 V189.3 Q511.3,185.3 515.3,185.3 H531.3 Q535.3,185.3 535.3,189.3 V326.0 Z" fill="#2a78d6"/>
+<text x="523.3" y="180.3" font-size="10" fill="#52514e" text-anchor="middle" font-weight="normal">2.81</text>
+<path d="M537.3,326.0 V267.3 Q537.3,263.3 541.3,263.3 H557.3 Q561.3,263.3 561.3,267.3 V326.0 Z" fill="#eb6834"/>
+<text x="549.3" y="258.3" font-size="10" fill="#52514e" text-anchor="middle" font-weight="normal">1.25</text>
+<text x="523.3" y="344.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="normal">满员</text>
+<path d="M592.0,326.0 V205.7 Q592.0,201.7 596.0,201.7 H612.0 Q616.0,201.7 616.0,205.7 V326.0 Z" fill="#1baf7a"/>
+<text x="604.0" y="196.7" font-size="10" fill="#52514e" text-anchor="middle" font-weight="normal">2.49</text>
+<path d="M618.0,326.0 V213.9 Q618.0,209.9 622.0,209.9 H638.0 Q642.0,209.9 642.0,213.9 V326.0 Z" fill="#2a78d6"/>
+<text x="630.0" y="204.9" font-size="10" fill="#52514e" text-anchor="middle" font-weight="normal">2.32</text>
+<path d="M644.0,326.0 V275.5 Q644.0,271.5 648.0,271.5 H664.0 Q668.0,271.5 668.0,275.5 V326.0 Z" fill="#eb6834"/>
+<text x="656.0" y="266.5" font-size="10" fill="#52514e" text-anchor="middle" font-weight="normal">1.09</text>
+<text x="630.0" y="344.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="normal">85%入座</text>
+<path d="M698.7,326.0 V222.3 Q698.7,218.3 702.7,218.3 H718.7 Q722.7,218.3 722.7,222.3 V326.0 Z" fill="#1baf7a"/>
+<text x="710.7" y="213.3" font-size="10" fill="#52514e" text-anchor="middle" font-weight="normal">2.15</text>
+<path d="M724.7,326.0 V236.6 Q724.7,232.6 728.7,232.6 H744.7 Q748.7,232.6 748.7,236.6 V326.0 Z" fill="#2a78d6"/>
+<text x="736.7" y="227.6" font-size="10" fill="#52514e" text-anchor="middle" font-weight="normal">1.87</text>
+<path d="M750.7,326.0 V283.4 Q750.7,279.4 754.7,279.4 H770.7 Q774.7,279.4 774.7,283.4 V326.0 Z" fill="#eb6834"/>
+<text x="762.7" y="274.4" font-size="10" fill="#52514e" text-anchor="middle" font-weight="normal">0.93</text>
+<text x="736.7" y="344.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="normal">70%入座</text>
+</svg>

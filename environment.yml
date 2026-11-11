@@ -1,0 +1,9 @@
+# conda环境定义。建立环境：conda env create -f environment.yml
+# 之后激活：conda activate randomseatenv
+name: randomseatenv
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+  - numpy=2.2      # 权重矩阵的计算
+  - django=5.2     # 网页服务

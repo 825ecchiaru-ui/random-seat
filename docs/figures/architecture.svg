@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="700" viewBox="0 0 1040 700" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="12" fill="#1e293b">
+  <defs>
+    <marker id="gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#475569"/>
+    </marker>
+    <marker id="red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/>
+    </marker>
+    <style>
+      .code { font-family: Consolas, 'Courier New', monospace; font-size: 11.5px; }
+      .file { font-size: 12px; fill: #64748b; }
+      .cls { font-size: 13px; font-weight: bold; }
+      .muted { fill: #64748b; font-size: 11px; }
+      .block { stroke: #94a3b8; stroke-width: 1; rx: 6; }
+      .inner { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1; rx: 4; }
+      .flow { stroke: #475569; stroke-width: 1.5; fill: none; marker-end: url(#gray); }
+      .write { stroke: #b91c1c; stroke-width: 1.5; fill: none; marker-end: url(#red); }
+    </style>
+  </defs>
+
+  <rect width="1040" height="700" fill="#ffffff"/>
+  <text x="20" y="30" font-size="17" font-weight="bold">当前程序架构：类、接口和数据的流向</text>
+
+  <!-- 程序入口 -->
+  <rect class="block" x="20" y="48" width="1000" height="44" fill="#f1f5f9"/>
+  <text x="36" y="75" class="cls">main.py · web/</text>
+  <text x="150" y="75">两个入口：main.py 是命令行演示，web/ 是 Django 网页服务。它们都只调用下面的包，自己不含排座逻辑</text>
+  <path class="flow" d="M520,92 L520,116"/>
+  <text x="530" y="109" class="muted">调用</text>
+
+  <!-- seat_random包 -->
+  <rect x="20" y="118" width="1000" height="400" fill="none" stroke="#94a3b8" stroke-dasharray="5 4" rx="8"/>
+  <text x="36" y="138" class="file">seat_random 包（后端逻辑）　　loader.py：load_class(history, 班级) 一步完成“搭建教室、计算负担、恢复状态”</text>
+
+  <!-- 第一列：数据模型 -->
+  <rect class="block" x="36" y="150" width="270" height="250" fill="#e0f2fe"/>
+  <text x="48" y="171" class="file">models.py　数据模型</text>
+
+  <rect class="inner" x="48" y="182" width="246" height="66"/>
+  <text x="58" y="200" class="cls">Classroom</text>
+  <text x="58" y="218" class="code">seats · blackboard_pos</text>
+  <text x="58" y="236" class="code">calculate_board_pos()</text>
+
+  <rect class="inner" x="48" y="256" width="246" height="66"/>
+  <text x="58" y="274" class="cls">Seat</text>
+  <text x="58" y="292" class="code">x · y · burden · distance_to_board</text>
+  <text x="58" y="310" class="code">student → Student 或 None</text>
+
+  <rect class="inner" x="48" y="330" width="246" height="62"/>
+  <text x="58" y="348" class="cls">Student</text>
+  <text x="58" y="365" class="code">student_id · accum_burden</text>
+  <text x="58" y="382" class="code">seat_history · current_seat → Seat</text>
+
+  <rect class="block" x="36" y="416" width="270" height="88" fill="#f1f5f9"/>
+  <text x="48" y="436" class="file">burden.py</text>
+  <text x="48" y="456" class="cls">BurdenCalculator(classroom)</text>
+  <text x="48" y="475" class="code">calculate_seat_burden() → {Seat: 负担值}</text>
+  <text x="48" y="493" class="muted">结果由调用方写入 seat.burden</text>
+  <path class="flow" d="M171,416 L171,402"/>
+
+  <!-- 第二列：分配器 -->
+  <rect class="block" x="386" y="150" width="270" height="250" fill="#fef3c7"/>
+  <text x="398" y="171" class="file">allocator.py　排座算法</text>
+  <text x="398" y="194" class="cls">SeatAllocator(classroom, students)</text>
+  <text x="398" y="216" class="muted">只读方法</text>
+  <text x="398" y="236" class="code">calculate_weights() → 权重矩阵</text>
+  <text x="398" y="254" class="code">generate_assignment(矩阵) → 方案</text>
+  <text x="398" y="272" class="code">random_assignment() → 方案</text>
+  <text x="398" y="290" class="code">score_assignment(方案) → 分数</text>
+  <text x="398" y="308" class="code">select_best_assignment() → (方案, 分数)</text>
+
+  <rect x="394" y="324" width="254" height="68" fill="#fee2e2" stroke="#b91c1c" rx="4"/>
+  <text x="402" y="342" font-size="11" fill="#b91c1c" font-weight="bold">修改学生和座位状态（仅此两处）</text>
+  <text x="402" y="362" class="code">apply_assignment(方案)</text>
+  <text x="402" y="381" class="code">restore_state(状态)</text>
+
+  <rect class="block" x="386" y="416" width="270" height="88" fill="#f1f5f9"/>
+  <text x="398" y="436" class="file">config.py　算法参数</text>
+  <text x="398" y="456" class="code">WEIGHT_BOARD / MOVE / HISTORY</text>
+  <text x="398" y="474" class="code">SCORE_WEIGHT_VAR / RANGE</text>
+  <text x="398" y="492" class="code">NUM_WEIGHTED_PLANS / NUM_RANDOM_PLANS</text>
+  <path class="flow" d="M521,400 L521,414"/>
+
+  <!-- 第三列：历史记录 -->
+  <rect class="block" x="734" y="150" width="270" height="354" fill="#dcfce7"/>
+  <text x="746" y="171" class="file">history.py　历史记录</text>
+
+  <rect class="inner" x="746" y="182" width="246" height="80"/>
+  <text x="756" y="200" class="cls">SeatAssignment(assignment_id)</text>
+  <text x="756" y="218" class="code">assignments · score · created_at</text>
+  <text x="756" y="236" class="code">set_seat_assignment(方案, 分数)</text>
+  <text x="756" y="253" class="muted">必须在 apply_assignment 之前调用</text>
+
+  <rect class="inner" x="746" y="270" width="246" height="226"/>
+  <text x="756" y="289" class="cls">HistoryManager(db_path)</text>
+  <text x="756" y="311" class="muted">管理</text>
+  <text x="790" y="311" class="code">add/rename/delete_class</text>
+  <text x="790" y="328" class="code">get_classes · set/get_seats</text>
+  <text x="790" y="345" class="code">add/rename/delete_student</text>
+  <text x="790" y="362" class="code">get_students · get_roster</text>
+  <text x="790" y="379" class="code">set_student_active · close</text>
+  <text x="756" y="399" class="muted">记录</text>
+  <text x="790" y="399" class="code">record_assignment(班级, 记录)</text>
+  <text x="756" y="419" class="muted">查询</text>
+  <text x="790" y="419" class="code">query_assignments(条件, limit)</text>
+  <text x="790" y="436" class="code">get_student_history(班级, 学生)</text>
+  <text x="756" y="456" class="muted">恢复</text>
+  <text x="790" y="456" class="code">load_state(班级) → 状态</text>
+  <text x="790" y="473" class="code">rollback_last(班级)</text>
+
+  <!-- 列之间的箭头 -->
+  <path class="flow" d="M386,250 L308,250"/>
+  <text x="346" y="243" text-anchor="middle" class="muted">读取</text>
+  <path class="write" d="M394,362 L308,362"/>
+  <text x="350" y="355" text-anchor="middle" font-size="11" fill="#b91c1c">写入</text>
+
+  <path class="flow" d="M656,304 L695,304 L695,236 L744,236"/>
+  <text x="664" y="262" class="muted">方案</text>
+  <text x="664" y="277" class="muted">分数</text>
+
+  <path class="flow" d="M746,452 L695,452 L695,377 L650,377"/>
+  <text x="664" y="420" class="muted">状态</text>
+
+  <!-- 数据库 -->
+  <path class="flow" d="M869,504 L869,556" marker-start="url(#gray)"/>
+  <text x="859" y="536" text-anchor="end" class="muted">读写（只有 HistoryManager 接触数据库）</text>
+  <rect class="block" x="734" y="558" width="270" height="92" fill="#f1f5f9"/>
+  <text x="746" y="580" class="cls">data/seat_history.db</text>
+  <text x="900" y="580" class="muted">SQLite</text>
+  <text x="746" y="602" class="code">classes · seats · students</text>
+  <text x="746" y="620" class="code">assignments · assignment_entries</text>
+  <text x="746" y="639" class="muted">不存座位负担和学生当前状态，都由记录推出</text>
+
+  <!-- 三种数据形式 -->
+  <rect x="20" y="540" width="690" height="140" fill="#ffffff" stroke="#cbd5e1" rx="6"/>
+  <text x="36" y="562" class="cls">在各部分之间传递的三种数据</text>
+  <text x="36" y="586" font-weight="bold">方案</text>
+  <text x="80" y="586" class="code">{Seat: Student}</text>
+  <text x="372" y="586" class="muted">含对象，只在程序内部使用；没出现的座位是空座</text>
+  <text x="36" y="610" font-weight="bold">记录</text>
+  <text x="80" y="610" class="code">{student_id: {"burden", "current_seat"}}</text>
+  <text x="372" y="610" class="muted">SeatAssignment.assignments，不含对象，可转成 JSON</text>
+  <text x="36" y="634" font-weight="bold">状态</text>
+  <text x="80" y="634" class="code">{student_id: {"seat_history",</text>
+  <text x="80" y="650" class="code">  "accum_burden", "current_seat"}}</text>
+  <text x="372" y="634" class="muted">load_state 的返回值，交给 restore_state</text>
+  <path class="flow" d="M36,668 L76,668"/>
+  <text x="84" y="672" class="muted">读取或传递数据</text>
+  <path class="write" d="M200,668 L240,668"/>
+  <text x="248" y="672" class="muted">修改学生和座位对象</text>
+</svg>

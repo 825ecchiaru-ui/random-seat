@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 974 372" width="974" height="372" font-family='system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif'>
+<rect width="974" height="372" fill="#fcfcfb"/>
+<text x="30.0" y="28.0" font-size="15" fill="#0b0b0b" text-anchor="start" font-weight="600">同一轮中两名学生对各座位的权重</text>
+<text x="30.0" y="47.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">颜色越深越容易被抽中；带黑框的是该学生当前的座位</text>
+<text x="30.0" y="82.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">历史负担最高的学生（比全班平均高 0.60）</text>
+<rect x="30" y="112" width="430" height="8" rx="2" fill="#52514e"/>
+<text x="246.0" y="106.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">黑板</text>
+<rect x="102" y="132" width="34" height="28" rx="4" fill="#eef3f9"/>
+<rect x="138" y="132" width="34" height="28" rx="4" fill="#eef3f9"/>
+<rect x="210" y="132" width="34" height="28" rx="4" fill="#ddeafa"/>
+<rect x="246" y="132" width="34" height="28" rx="4" fill="#e2edfa"/>
+<rect x="318" y="132" width="34" height="28" rx="4" fill="#eef3f9"/>
+<rect x="354" y="132" width="34" height="28" rx="4" fill="#eef3f9"/>
+<rect x="30" y="162" width="34" height="28" rx="4" fill="#eef3f9"/>
+<rect x="102" y="162" width="34" height="28" rx="4" fill="#eef3f9"/>
+<rect x="138" y="162" width="34" height="28" rx="4" fill="#ecf2f9"/>
+<rect x="210" y="162" width="34" height="28" rx="4" fill="#307ad4"/>
+<rect x="246" y="162" width="34" height="28" rx="4" fill="#6ca6ec"/>
+<rect x="318" y="162" width="34" height="28" rx="4" fill="#eef3f9"/>
+<rect x="354" y="162" width="34" height="28" rx="4" fill="#eef3f9"/>
+<rect x="426" y="162" width="34" height="28" rx="4" fill="#eef3f9"/>
+<rect x="30" y="192" width="34" height="28" rx="4" fill="#eef3f9"/>
+<rect x="102" y="192" width="34" height="28" rx="4" fill="#edf3f9"/>
+<rect x="138" y="192" width="34" height="28" rx="4" fill="#e7eff9"/>
+<rect x="210" y="192" width="34" height="28" rx="4" fill="#8dbaf0"/>
+<rect x="246" y="192" width="34" height="28" rx="4" fill="#b1d0f6"/>
+<rect x="318" y="192" width="34" height="28" rx="4" fill="#ecf2f9"/>
+<rect x="354" y="192" width="34" height="28" rx="4" fill="#eef3f9"/>
+<rect x="426" y="192" width="34" height="28" rx="4" fill="#eef3f9"/>
+<rect x="30" y="222" width="34" height="28" rx="4" fill="#eef3f9"/>
+<rect x="102" y="222" width="34" height="28" rx="4" fill="#edf2f9"/>
+<rect x="138" y="222" width="34" height="28" rx="4" fill="#e1ecfa"/>
+<rect x="210" y="222" width="34" height="28" rx="4" fill="#86b6ef"/>
+<rect x="246" y="222" width="34" height="28" rx="4" fill="#a8cbf5"/>
+<rect x="318" y="222" width="34" height="28" rx="4" fill="#eaf1f9"/>
+<rect x="354" y="222" width="34" height="28" rx="4" fill="#eef3f9"/>
+<rect x="426" y="222" width="34" height="28" rx="4" fill="#eef3f9"/>
+<rect x="102" y="252" width="34" height="28" rx="4" fill="#edf3f9"/>
+<rect x="138" y="252" width="34" height="28" rx="4" fill="#e6eff9"/>
+<rect x="210" y="252" width="34" height="28" rx="4" fill="#0d366b"/>
+<rect x="246" y="252" width="34" height="28" rx="4" fill="#1d5eae"/>
+<rect x="318" y="252" width="34" height="28" rx="4" fill="#ebf2f9"/>
+<rect x="354" y="252" width="34" height="28" rx="4" fill="#eef3f9"/>
+<rect x="102" y="282" width="34" height="28" rx="4" fill="#eef3f9"/>
+<rect x="138" y="282" width="34" height="28" rx="4" fill="#ebf2f9"/>
+<rect x="210" y="282" width="34" height="28" rx="4" fill="#d6e7fa"/>
+<rect x="246" y="282" width="34" height="28" rx="4" fill="#dbe9fa"/>
+<rect x="318" y="282" width="34" height="28" rx="4" fill="#edf3f9"/>
+<rect x="354" y="282" width="34" height="28" rx="4" fill="#eef3f9"/>
+<rect x="355" y="133" width="32" height="26" rx="3" fill="none" stroke="#0b0b0b" stroke-width="2"/>
+<text x="512.0" y="82.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">历史负担最低的学生（比全班平均低 0.53）</text>
+<rect x="512" y="112" width="430" height="8" rx="2" fill="#52514e"/>
+<text x="728.0" y="106.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">黑板</text>
+<rect x="584" y="132" width="34" height="28" rx="4" fill="#bed9f8"/>
+<rect x="620" y="132" width="34" height="28" rx="4" fill="#8bb9f0"/>
+<rect x="692" y="132" width="34" height="28" rx="4" fill="#103e79"/>
+<rect x="728" y="132" width="34" height="28" rx="4" fill="#0d366b"/>
+<rect x="800" y="132" width="34" height="28" rx="4" fill="#6da7ec"/>
+<rect x="836" y="132" width="34" height="28" rx="4" fill="#a7cbf5"/>
+<rect x="512" y="162" width="34" height="28" rx="4" fill="#edf2f9"/>
+<rect x="584" y="162" width="34" height="28" rx="4" fill="#d7e7fa"/>
+<rect x="620" y="162" width="34" height="28" rx="4" fill="#cde2fb"/>
+<rect x="692" y="162" width="34" height="28" rx="4" fill="#98c1f2"/>
+<rect x="728" y="162" width="34" height="28" rx="4" fill="#90bcf1"/>
+<rect x="800" y="162" width="34" height="28" rx="4" fill="#bbd7f8"/>
+<rect x="836" y="162" width="34" height="28" rx="4" fill="#cfe3fb"/>
+<rect x="908" y="162" width="34" height="28" rx="4" fill="#edf2f9"/>
+<rect x="512" y="192" width="34" height="28" rx="4" fill="#ecf2f9"/>
+<rect x="584" y="192" width="34" height="28" rx="4" fill="#e2edfa"/>
+<rect x="620" y="192" width="34" height="28" rx="4" fill="#dfebfa"/>
+<rect x="692" y="192" width="34" height="28" rx="4" fill="#d9e8fa"/>
+<rect x="728" y="192" width="34" height="28" rx="4" fill="#d8e7fa"/>
+<rect x="800" y="192" width="34" height="28" rx="4" fill="#dae9fa"/>
+<rect x="836" y="192" width="34" height="28" rx="4" fill="#ddeafa"/>
+<rect x="908" y="192" width="34" height="28" rx="4" fill="#ebf2f9"/>
+<rect x="512" y="222" width="34" height="28" rx="4" fill="#ecf2f9"/>
+<rect x="584" y="222" width="34" height="28" rx="4" fill="#e4eefa"/>
+<rect x="620" y="222" width="34" height="28" rx="4" fill="#e7eff9"/>
+<rect x="692" y="222" width="34" height="28" rx="4" fill="#e7eff9"/>
+<rect x="728" y="222" width="34" height="28" rx="4" fill="#e6effa"/>
+<rect x="800" y="222" width="34" height="28" rx="4" fill="#e4eefa"/>
+<rect x="836" y="222" width="34" height="28" rx="4" fill="#e0ecfa"/>
+<rect x="908" y="222" width="34" height="28" rx="4" fill="#ebf1f9"/>
+<rect x="584" y="252" width="34" height="28" rx="4" fill="#deebfa"/>
+<rect x="620" y="252" width="34" height="28" rx="4" fill="#e6eff9"/>
+<rect x="692" y="252" width="34" height="28" rx="4" fill="#ebf2f9"/>
+<rect x="728" y="252" width="34" height="28" rx="4" fill="#eaf1f9"/>
+<rect x="800" y="252" width="34" height="28" rx="4" fill="#e3edfa"/>
+<rect x="836" y="252" width="34" height="28" rx="4" fill="#d7e7fa"/>
+<rect x="584" y="282" width="34" height="28" rx="4" fill="#d0e4fb"/>
+<rect x="620" y="282" width="34" height="28" rx="4" fill="#deebfa"/>
+<rect x="692" y="282" width="34" height="28" rx="4" fill="#e7eff9"/>
+<rect x="728" y="282" width="34" height="28" rx="4" fill="#e6effa"/>
+<rect x="800" y="282" width="34" height="28" rx="4" fill="#d8e8fa"/>
+<rect x="836" y="282" width="34" height="28" rx="4" fill="#b9d6f8"/>
+<rect x="693" y="253" width="32" height="26" rx="3" fill="none" stroke="#0b0b0b" stroke-width="2"/>
+<rect x="30.0" y="346" width="5.5" height="10" fill="#ecf2f9"/>
+<rect x="35.0" y="346" width="5.5" height="10" fill="#e9f0f9"/>
+<rect x="40.0" y="346" width="5.5" height="10" fill="#e5effa"/>
+<rect x="45.0" y="346" width="5.5" height="10" fill="#e2edfa"/>
+<rect x="50.0" y="346" width="5.5" height="10" fill="#dfebfa"/>
+<rect x="55.0" y="346" width="5.5" height="10" fill="#dbe9fa"/>
+<rect x="60.0" y="346" width="5.5" height="10" fill="#d8e7fa"/>
+<rect x="65.0" y="346" width="5.5" height="10" fill="#d4e6fb"/>
+<rect x="70.0" y="346" width="5.5" height="10" fill="#d1e4fb"/>
+<rect x="75.0" y="346" width="5.5" height="10" fill="#cde2fb"/>
+<rect x="80.0" y="346" width="5.5" height="10" fill="#c6defa"/>
+<rect x="85.0" y="346" width="5.5" height="10" fill="#bfd9f9"/>
+<rect x="90.0" y="346" width="5.5" height="10" fill="#b8d5f7"/>
+<rect x="95.0" y="346" width="5.5" height="10" fill="#b0d0f6"/>
+<rect x="100.0" y="346" width="5.5" height="10" fill="#a9ccf5"/>
+<rect x="105.0" y="346" width="5.5" height="10" fill="#a1c7f4"/>
+<rect x="110.0" y="346" width="5.5" height="10" fill="#9ac2f2"/>
+<rect x="115.0" y="346" width="5.5" height="10" fill="#93bef1"/>
+<rect x="120.0" y="346" width="5.5" height="10" fill="#8bb9f0"/>
+<rect x="125.0" y="346" width="5.5" height="10" fill="#84b5ef"/>
+<rect x="130.0" y="346" width="5.5" height="10" fill="#7cb0ee"/>
+<rect x="135.0" y="346" width="5.5" height="10" fill="#74abed"/>
+<rect x="140.0" y="346" width="5.5" height="10" fill="#6ca6ec"/>
+<rect x="145.0" y="346" width="5.5" height="10" fill="#64a1eb"/>
+<rect x="150.0" y="346" width="5.5" height="10" fill="#5b9ce9"/>
+<rect x="155.0" y="346" width="5.5" height="10" fill="#5397e8"/>
+<rect x="160.0" y="346" width="5.5" height="10" fill="#4b92e7"/>
+<rect x="165.0" y="346" width="5.5" height="10" fill="#438de6"/>
+<rect x="170.0" y="346" width="5.5" height="10" fill="#3b88e5"/>
+<rect x="175.0" y="346" width="5.5" height="10" fill="#3784e1"/>
+<rect x="180.0" y="346" width="5.5" height="10" fill="#347fdb"/>
+<rect x="185.0" y="346" width="5.5" height="10" fill="#317bd5"/>
+<rect x="190.0" y="346" width="5.5" height="10" fill="#2e76cf"/>
+<rect x="195.0" y="346" width="5.5" height="10" fill="#2b72c9"/>
+<rect x="200.0" y="346" width="5.5" height="10" fill="#286dc3"/>
+<rect x="205.0" y="346" width="5.5" height="10" fill="#2569bd"/>
+<rect x="210.0" y="346" width="5.5" height="10" fill="#2265b6"/>
+<rect x="215.0" y="346" width="5.5" height="10" fill="#1f60b0"/>
+<rect x="220.0" y="346" width="5.5" height="10" fill="#1c5caa"/>
+<rect x="225.0" y="346" width="5.5" height="10" fill="#1a58a4"/>
+<rect x="230.0" y="346" width="5.5" height="10" fill="#19549d"/>
+<rect x="235.0" y="346" width="5.5" height="10" fill="#175096"/>
+<rect x="240.0" y="346" width="5.5" height="10" fill="#164c90"/>
+<rect x="245.0" y="346" width="5.5" height="10" fill="#144889"/>
+<rect x="250.0" y="346" width="5.5" height="10" fill="#124482"/>
+<rect x="255.0" y="346" width="5.5" height="10" fill="#11407c"/>
+<rect x="260.0" y="346" width="5.5" height="10" fill="#0f3c75"/>
+<rect x="265.0" y="346" width="5.5" height="10" fill="#0e386e"/>
+<text x="30.0" y="340.0" font-size="11" fill="#898781" text-anchor="start" font-weight="normal">权重 0</text>
+<text x="270.0" y="340.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">1（该学生最偏好的座位）</text>
+</svg>

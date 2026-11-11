@@ -1,0 +1,130 @@
+/* 网页样式 */
+:root {
+  --ink: #1e293b;          /* 正文 */
+  --muted: #64748b;        /* 次要文字 */
+  --line: #cbd5e1;         /* 边线 */
+  --bg: #f8fafc;           /* 页面底色 */
+  --card: #ffffff;         /* 卡片底色 */
+  --accent: #2563eb;       /* 主要按钮、选中状态 */
+  --danger: #b91c1c;       /* 删除类操作 */
+  --warn-bg: #fef3c7;      /* 预览提示条 */
+  --cell: 76px;            /* 一个座位的边长 */
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 14px/1.5 "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+}
+
+/* ---------- 顶栏、页面切换 ---------- */
+.topbar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+  padding: 12px 20px; background: var(--card); border-bottom: 1px solid var(--line);
+}
+.topbar h1 { font-size: 18px; margin: 0 16px 0 0; }
+.class-picker { display: flex; align-items: center; gap: 6px; color: var(--muted); }
+
+.tabs { display: flex; gap: 4px; padding: 0 20px; background: var(--card); border-bottom: 1px solid var(--line); }
+.tabs button {
+  border: 0; border-bottom: 3px solid transparent; border-radius: 0;
+  background: none; padding: 10px 16px; font-size: 15px; color: var(--muted);
+}
+.tabs button.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: bold; }
+
+main { padding: 20px; max-width: 1280px; margin: 0 auto; }
+footer { padding: 0 20px 24px; max-width: 1280px; margin: 0 auto; }
+
+/* ---------- 按钮、输入框 ---------- */
+button, select, input, textarea { font: inherit; color: inherit; }
+button {
+  padding: 6px 14px; border: 1px solid var(--line); border-radius: 6px;
+  background: var(--card); cursor: pointer;
+}
+button:hover:not(:disabled) { border-color: var(--accent); }
+button:disabled { opacity: .5; cursor: not-allowed; }
+/* 操作进行中（请求还没有返回）：按钮暂时不可点击 */
+body.busy button, body.busy select { pointer-events: none; opacity: .6; }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+button.danger { color: var(--danger); }
+button.danger:hover:not(:disabled) { border-color: var(--danger); }
+button.small { padding: 2px 8px; font-size: 13px; }
+button.link { border: 0; background: none; padding: 0; color: var(--muted); text-decoration: underline; }
+select, input[type=text] { padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); }
+textarea { width: 100%; padding: 8px; border: 1px solid var(--line); border-radius: 6px; resize: vertical; }
+
+/* ---------- 通用版块 ---------- */
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+.card h2 { font-size: 15px; margin: 0 0 10px; }
+.columns { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
+.columns > .grow { flex: 1 1 520px; min-width: 0; }
+.columns > .side { flex: 0 1 340px; }
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 14px; }
+.hint { color: var(--muted); }
+.empty { padding: 40px 20px; text-align: center; color: var(--muted); }
+.banner { background: var(--warn-bg); border: 1px solid #f59e0b; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; }
+.banner strong { margin-right: 8px; }
+.score { font-variant-numeric: tabular-nums; font-weight: bold; }
+
+table { border-collapse: collapse; width: 100%; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #e2e8f0; white-space: nowrap; }
+th { color: var(--muted); font-weight: normal; font-size: 13px; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr.inactive td { color: var(--muted); }
+tr.clickable { cursor: pointer; }
+tr.clickable:hover td { background: #f1f5f9; }
+tr.selected td { background: #dbeafe; }
+.actions { display: flex; gap: 6px; }
+.up { color: #b45309; }      /* 负担增加 */
+.down { color: #15803d; }    /* 负担减少 */
+
+/* ---------- 教室和座位 ---------- */
+.room-scroll { overflow-x: auto; padding-bottom: 6px; }
+.room { display: inline-flex; flex-direction: column; align-items: center; gap: 14px; }
+.blackboard {
+  width: 60%; min-width: 160px; padding: 4px 0; text-align: center; letter-spacing: 6px;
+  background: #334155; color: #fff; border-radius: 4px; font-size: 13px;
+}
+.grid { display: grid; gap: 6px; }
+
+.seat {
+  width: var(--cell); height: var(--cell); padding: 4px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  border: 1px solid var(--line); border-radius: 8px; text-align: center; overflow: hidden;
+}
+button.seat { cursor: pointer; }
+.seat .who { font-weight: bold; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.seat .sub { font-size: 11px; color: #475569; font-variant-numeric: tabular-nums; }
+.seat.vacant .who { font-weight: normal; color: #94a3b8; }
+.seat.moved { border-color: #f59e0b; border-width: 2px; }       /* 预览中与当前不同的座位 */
+.seat.picked { outline: 3px solid var(--accent); outline-offset: 1px; }
+.seat.gone { border-style: dashed; background: #fff !important; }  /* 历史方案里有、现在座位表里没有的座位 */
+
+.legend { display: flex; align-items: center; gap: 8px; margin-top: 12px; color: var(--muted); font-size: 12px; }
+.legend .ramp { width: 120px; height: 10px; border-radius: 5px; border: 1px solid var(--line);
+  background: linear-gradient(to right, hsl(213 70% 97%), hsl(213 70% 78%)); }
+
+/* 座位表编辑器：格子小一些 */
+.editor { --cell: 38px; }
+.editor .cell {
+  width: var(--cell); height: var(--cell); padding: 0;
+  border: 1px dashed var(--line); border-radius: 6px; background: var(--card);
+}
+.editor .cell.on { border: 1px solid var(--accent); background: #bfdbfe; }
+
+/* ---------- 提示条、弹窗 ---------- */
+#toast {
+  position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%);
+  max-width: 80vw; padding: 10px 18px; border-radius: 8px;
+  background: #1e293b; color: #fff; opacity: 0; pointer-events: none; transition: opacity .2s;
+}
+#toast.show { opacity: 1; }
+#toast.error { background: var(--danger); }
+
+dialog { border: 1px solid var(--line); border-radius: 10px; padding: 20px; min-width: 360px; max-height: 80vh; }
+dialog::backdrop { background: rgba(15, 23, 42, .35); }
+dialog h2 { font-size: 16px; margin: 0 0 12px; }
+dialog .toolbar { margin: 14px 0 0; justify-content: flex-end; }
